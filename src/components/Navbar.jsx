@@ -28,14 +28,14 @@ export default class Example extends React.Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="/components/">Components</NavLink>
+                                <NavLink href="/">Link 1</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                                <NavLink href="/">Link 2</NavLink>
                             </NavItem>
                             <UncontrolledDropdown nav inNavbar>
                                 <DropdownToggle nav caret>
-                                    Options
+                                    Dropdown
                                 </DropdownToggle>
                                 <DropdownMenu right>
                                     <DropdownItem>
@@ -43,10 +43,6 @@ export default class Example extends React.Component {
                                     </DropdownItem>
                                     <DropdownItem>
                                         Option 2
-                                    </DropdownItem>
-                                    <DropdownItem divider />
-                                    <DropdownItem>
-                                        Reset
                                     </DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
