@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Col, Row } from 'reactstrap'
 
 import TopArtists from './TopArtists'
+import TopTracks from './TopTracks'
 
 import MusicService from '../services/MusicService'
 
@@ -18,7 +19,7 @@ class HomeComponent extends React.Component {
         this.musicService.getTopArtists()
             .then(artists => this.props.setArtists(artists))
         this.musicService.getTopTracks()
-        // .then(tracks => console.log(tracks))
+            .then(tracks => this.props.setTracks(tracks))
     }
 
     render() {
@@ -29,6 +30,9 @@ class HomeComponent extends React.Component {
                     <Col md={6} xl={3}>
                         <TopArtists />
                     </Col>
+                    <Col md={6} xl={3}>
+                        <TopTracks />
+                    </Col>
                 </Row>
             </div>
         )
@@ -37,6 +41,7 @@ class HomeComponent extends React.Component {
 
 HomeComponent.propTypes = {
     setArtists: PropTypes.func,
+    setTracks: PropTypes.func,
     topArtists: PropTypes.array
 }
 
@@ -51,6 +56,11 @@ const mapDispatchToProps = dispatch => {
         setArtists: (topArtists) => dispatch({
             type: 'SET_ARTISTS',
             topArtists
+        }),
+
+        setTracks: (topTracks) => dispatch({
+            type: 'SET_TRACKS',
+            topTracks
         })
     }
 }

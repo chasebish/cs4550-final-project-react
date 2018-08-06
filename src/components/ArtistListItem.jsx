@@ -4,7 +4,7 @@ import { ListGroupItem } from 'reactstrap'
 
 const ArtistListItem = ({ artist, rank }) => (
     <ListGroupItem>
-        {console.log(artist)}
+        {/* {console.log(artist)} */}
         <h4>#{rank} {artist.name}</h4>
     </ListGroupItem>
 )
