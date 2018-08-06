@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
-import ArtistListItem from '../components/ArtistListItem'
+import { ArtistListItem } from '../components'
 
 const TopArtistsComponent = ({ topArtists }) => (
     <div>

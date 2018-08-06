@@ -6,7 +6,7 @@ import { Col, Row } from 'reactstrap'
 import TopArtists from './TopArtists'
 import TopTracks from './TopTracks'
 
-import MusicService from '../services/MusicService'
+import { MusicService } from '../services'
 
 class HomeComponent extends React.Component {
 

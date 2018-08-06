@@ -2,9 +2,8 @@ import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import Home from '../containers/Home'
-
-import Navbar from './Navbar'
+import { Home } from '../containers'
+import { Navbar } from '.'
 
 const RootComponent = () => (
     <BrowserRouter>

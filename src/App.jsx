@@ -3,7 +3,7 @@ import { combineReducers, createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { ArtistReducer, TrackReducer } from './reducers'
 
-import RootComponent from './components/RootComponent'
+import { RootComponent } from './components'
 
 const rootReducer = combineReducers({
     ArtistReducer,
