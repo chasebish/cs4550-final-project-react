@@ -2,8 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import TopArtists from './TopArtists'
-import TopTracks from './TopTracks'
+import { TopArtists, TopTracks } from '../components'
 import { MusicService } from '../services'
 import { artistActions, trackActions } from '../constants'
 

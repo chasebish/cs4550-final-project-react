@@ -43,7 +43,8 @@ class RegisterComponent extends React.Component {
 
                 const user = {
                     username: this.state.username,
-                    password: this.state.password
+                    password: this.state.password,
+                    role: 'REVIEWER'
                 }
 
                 this.userService.registerUser(user)

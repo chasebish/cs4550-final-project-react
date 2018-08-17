@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { TrackListItem } from '../components'
+import { TrackListItem } from '.'
 
 const TopTracksComponent = ({ topTracks }) => (
     <div>

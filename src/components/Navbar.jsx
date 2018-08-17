@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Collapse, Navbar, NavbarToggler, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
+import { Collapse, Navbar, NavbarToggler } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -49,30 +49,11 @@ class CustomNavbarComponent extends React.Component {
                 <NavbarToggler onClick={this.openNavButton} />
                 <Collapse isOpen={this.state.isOpen} navbar>
                     <ul className="navbar-nav mr-auto">
-                        <li className="nav-item">
-                            <Link to="/request" className="nav-link">Request a Video</Link>
-                        </li>
-                        <UncontrolledDropdown nav inNavbar>
-                            <DropdownToggle nav caret>
-                                Profile
-                            </DropdownToggle>
-                            <DropdownMenu right>
-                                {this.props.user.username &&
-                                    <Link to="/profile" className="dropdown-item">View Profile</Link>}
-                                {!this.props.user.username &&
-                                    <div>
-                                        <Link to="/register" className="dropdown-item">Register</Link>
-                                        <Link to="/login" className="dropdown-item">Login</Link>
-                                    </div>
-                                }
-                                {this.props.user.username &&
-                                    <div>
-                                        <DropdownItem divider />
-                                        <button className='dropdown-item' onClick={() => this.logout()}>Logout</button>
-                                    </div>
-                                }
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
+                        {this.props.user.username &&
+                            <li className='nav-item'>
+                                <div className='font-weight-light text-white-50'>User - {this.props.user.username}</div>
+                            </li>
+                        }
                     </ul>
                     {!this.props.user.username &&
                         <div className="form-inline my-lg-0">
