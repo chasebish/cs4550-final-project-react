@@ -63,6 +63,9 @@ export default class UserService {
         })
             .then(response => response.json())
 
+    findUserById = username =>
+        fetch(`${SERVER_URL}/user/username/${username}`)
+            .then(response => response.json())
 
     getProfile = () =>
         fetch(`${SERVER_URL}/profile`, {

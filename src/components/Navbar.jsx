@@ -74,11 +74,39 @@ class CustomNavbarComponent extends React.Component {
                             </DropdownMenu>
                         </UncontrolledDropdown>
                     </ul>
+                    {!this.props.user.username &&
+                        <div className="form-inline my-lg-0">
+                            <ul className="navbar-nav mr-auto">
+                                <li className="nav-item">
+                                    <Link to="/register" className="btn btn-outline-info mr-md-2 mb-2 mb-md-0">Register</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/login" className="btn btn-outline-info mr-md-2 mb-2 mb-md-0">Login</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    {this.props.user.username &&
+                        <div className="form-inline my-lg-0">
+                            <ul className="navbar-nav mr-auto">
+                                <li className="nav-item">
+                                    <Link to="/profile" className="btn btn-outline-info mr-md-2 mb-2 mb-md-0">Profile</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <button onClick={() => this.logout()} className="btn btn-outline-danger mr-md-2 mb-2 mb-md-0">Logout</button>
+                                </li>
+                            </ul>
+                        </div>
+                    }
                     <div className="form-inline my-lg-0">
-                        <input value={this.state.query} onChange={this.updateQuery} className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button onClick={() => this.search(this.state.query)} className="btn btn-outline-success my-sm-0">
-                            Search
-                        </button>
+                        <div className='input-group'>
+                            <input value={this.state.query} onChange={this.updateQuery} className="form-control" type="search" placeholder="Search" aria-label="Search" />
+                            <div className="input-group-append">
+                                <button onClick={() => this.search(this.state.query)} className="btn btn-outline-success">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </Collapse>
             </Navbar>
