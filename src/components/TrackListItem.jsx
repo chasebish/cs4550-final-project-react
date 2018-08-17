@@ -1,12 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ListGroupItem } from 'reactstrap'
 
 const TrackListItem = ({ track, rank }) => (
-    <ListGroupItem>
-        {/* {console.log(track)} */}
+    <li className='list-group-item'>
         <h4>#{rank} {track.name}</h4>
-    </ListGroupItem>
+    </li>
 )
 
 TrackListItem.propTypes = {

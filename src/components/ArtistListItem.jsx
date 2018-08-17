@@ -1,12 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ListGroupItem } from 'reactstrap'
 
 const ArtistListItem = ({ artist, rank }) => (
-    <ListGroupItem>
+    <li className='list-group-item'>
         {/* {console.log(artist)} */}
         <h4>#{rank} {artist.name}</h4>
-    </ListGroupItem>
+    </li>
 )
 
 ArtistListItem.propTypes = {

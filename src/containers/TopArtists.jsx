@@ -1,18 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ListGroup, ListGroupItem } from 'reactstrap'
 
 import { ArtistListItem } from '../components'
 
 const TopArtistsComponent = ({ topArtists }) => (
     <div>
-        <ListGroup>
-            <ListGroupItem>
+        <ul className='list-group'>
+            <li className='list-group-item'>
                 <h3>Top Artists</h3>
-            </ListGroupItem>
+            </li>
             {renderArtists(topArtists)}
-        </ListGroup>
+        </ul>
     </div>
 )
 
