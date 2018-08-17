@@ -1,12 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Col, Row } from 'reactstrap'
 
 import TopArtists from './TopArtists'
 import TopTracks from './TopTracks'
-
 import { MusicService } from '../services'
+import { artistActions, trackActions } from '../constants'
 
 class HomeComponent extends React.Component {
 
@@ -26,14 +25,14 @@ class HomeComponent extends React.Component {
         return (
             <div>
                 <h1>Home</h1>
-                <Row>
-                    <Col md={6} xl={3}>
+                <div className='row'>
+                    <div className='col-md-6 col-xl-3'>
                         <TopArtists />
-                    </Col>
-                    <Col md={6} xl={3}>
+                    </div>
+                    <div className='col-md-6 col-xl-3'>
                         <TopTracks />
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </div>
         )
     }
@@ -53,15 +52,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setArtists: (topArtists) => dispatch({
-            type: 'SET_ARTISTS',
-            topArtists
-        }),
+        setArtists: (topArtists) => dispatch({ type: artistActions.SET_ARTISTS, topArtists }),
 
-        setTracks: (topTracks) => dispatch({
-            type: 'SET_TRACKS',
-            topTracks
-        })
+        setTracks: (topTracks) => dispatch({ type: trackActions.SET_TRACKS, topTracks })
     }
 }
 

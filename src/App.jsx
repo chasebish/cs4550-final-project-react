@@ -1,13 +1,14 @@
 import React from 'react'
 import { combineReducers, createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { ArtistReducer, TrackReducer } from './reducers'
+import { ArtistReducer, TrackReducer, UserReducer } from './reducers'
 
 import { RootComponent } from './components'
 
 const rootReducer = combineReducers({
     ArtistReducer,
-    TrackReducer
+    TrackReducer,
+    UserReducer
 })
 
 const store = createStore(rootReducer)
