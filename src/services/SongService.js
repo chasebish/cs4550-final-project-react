@@ -4,24 +4,39 @@ import { SERVER_URL } from '../constants'
 
 let _singleton = Symbol()
 
-export default class UserService {
+export default class SongService {
     constructor(singletonToken) {
         if (_singleton !== singletonToken)
             throw new Error('Cannot instantiate directly.')
     }
     static get instance() {
         if (!this[_singleton])
-            this[_singleton] = new UserService(_singleton)
+            this[_singleton] = new SongService(_singleton)
         return this[_singleton]
     }
 
-    findAllUsers = () =>
+    findAllSongs = () =>
         fetch(`${SERVER_URL}/user`)
             .then(response => response.json())
 
-    registerUser = user =>
-        fetch(`${SERVER_URL}/register`, {
-            body: JSON.stringify(user),
+    songSearch = query =>
+        fetch(`${SERVER_URL}/song/search/${query}`)
+            .then(response => response.json())
+
+    findSongById = id =>
+        fetch(`${SERVER_URL}/song/${id}`)
+            .then(response => response.json())
+
+    findSongBySongId = songId =>
+        fetch(`${SERVER_URL}/song/${songId}`)
+            .then(response => response.json())
+
+    /**
+     * Artist MUST be logged in to use this function!
+     */
+    createSongByArtist = song =>
+        fetch(`${SERVER_URL}/artist/song`, {
+            body: JSON.stringify(song),
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
@@ -30,9 +45,9 @@ export default class UserService {
         })
             .then(response => response.json())
 
-    loginUser = user =>
-        fetch(`${SERVER_URL}/login`, {
-            body: JSON.stringify(user),
+    createSong = song =>
+        fetch(`${SERVER_URL}/song`, {
+            body: JSON.stringify(song),
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
@@ -41,16 +56,9 @@ export default class UserService {
         })
             .then(response => response.json())
 
-    logout = () =>
-        fetch(`${SERVER_URL}/logout`, {
-            credentials: 'include',
-            method: 'POST'
-        })
-
-
-    updateUser = (userId, user) =>
-        fetch(`${SERVER_URL}/user/${userId}`, {
-            body: JSON.stringify(user),
+    updateSong = (id, song) =>
+        fetch(`${SERVER_URL}/song/${id}`, {
+            body: JSON.stringify(song),
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
@@ -59,21 +67,10 @@ export default class UserService {
         })
             .then(response => response.json())
 
-    findUserById = userId =>
-        fetch(`${SERVER_URL}/user/${userId}`, {
-            credentials: 'include'
+    deleteSong = id =>
+        fetch(`${SERVER_URL}/song/${id}`, {
+            method: 'DELETE'
         })
             .then(response => response.json())
-
-    findUserById = username =>
-        fetch(`${SERVER_URL}/user/username/${username}`)
-            .then(response => response.json())
-
-    getProfile = () =>
-        fetch(`${SERVER_URL}/profile`, {
-            credentials: 'include'
-        })
-            .then(response => response.json())
-
 
 }

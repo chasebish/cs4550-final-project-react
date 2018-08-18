@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import { UserService } from '../services'
 import { userActions } from '../constants'
 
-class RegisterComponent extends React.Component {
+class ArtistRegisterComponent extends React.Component {
 
     constructor(props) {
         super(props)
@@ -45,7 +45,7 @@ class RegisterComponent extends React.Component {
                 const user = {
                     username: this.state.username,
                     password: this.state.password,
-                    role: 'REVIEWER'
+                    role: 'ARTIST'
                 }
 
                 this.userService.registerUser(user)
@@ -60,7 +60,7 @@ class RegisterComponent extends React.Component {
     render() {
         return (
             <div className='jumbotron bg-light'>
-                <h1 className='display-3'>Register</h1>
+                <h1 className='display-3'>Artist Register</h1>
                 <div className='form-group row'>
                     <label htmlFor="email" className="col-sm-2 col-form-label">Username</label>
                     <div className="col-sm-10">
@@ -85,14 +85,9 @@ class RegisterComponent extends React.Component {
                 </button>
                 <hr className="my-4" />
                 <div className="form-group text-center">
-                    <Link to="/login" className="btn btn-primary form-control col-sm-8 col-md-6" id='login' role="button">Login</Link>
+                    <Link to="/register" className="btn btn-info form-control col-sm-8 col-md-6" id='login' role="button">Reviewer</Link>
                     <br />
-                    <small htmlFor="login" className="">Existing User?</small>
-                </div>
-                <div className="form-group text-center">
-                    <Link to="/register/artist" className="btn btn-info form-control col-sm-8 col-md-6" id='login' role="button">Artist Portal</Link>
-                    <br />
-                    <small htmlFor="login" className="">New Artist?</small>
+                    <small htmlFor="login" className="">Not an Artist?</small>
                 </div>
             </div>
         )
@@ -100,7 +95,7 @@ class RegisterComponent extends React.Component {
 
 }
 
-RegisterComponent.propTypes = {
+ArtistRegisterComponent.propTypes = {
     history: PropTypes.object,
     setUser: PropTypes.func
 }
@@ -113,5 +108,5 @@ const mapDispatchToProps = dispatch => (
     }
 )
 
-const Register = connect(mapStateToProps, mapDispatchToProps)(RegisterComponent)
-export default Register
+const ArtistRegister = connect(mapStateToProps, mapDispatchToProps)(ArtistRegisterComponent)
+export default ArtistRegister

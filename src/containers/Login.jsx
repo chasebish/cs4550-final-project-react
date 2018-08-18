@@ -3,6 +3,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { UserService } from '../services'
 import { userActions } from '../constants'
@@ -56,6 +57,12 @@ class LoginComponent extends React.Component {
                 <button className='btn btn-block btn-success' onClick={() => this.login()}>
                     Login
                 </button>
+                <hr className="my-4" />
+                <div className="form-group text-center">
+                    <Link to="/register" className="btn btn-primary form-control col-sm-8 col-md-6" id='login' role="button">Register</Link>
+                    <br />
+                    <small htmlFor="login" className="">New to aMused?</small>
+                </div>
             </div>
         )
     }

@@ -25,11 +25,18 @@ class HomeComponent extends React.Component {
             <div>
                 <h1 className='display-4'>aMused</h1>
                 <div className='row'>
-                    <div className='col-md-6 col-xl-3'>
-                        <TopArtists />
+                    <div className='col-xl-6'>
+                        <h1>USER FEEEED</h1>
                     </div>
-                    <div className='col-md-6 col-xl-3'>
-                        <TopTracks />
+                    <div className='col-xl-6 mt-5 mt-xl-0'>
+                        <div className='row'>
+                            <div className='col-md-6'>
+                                <TopArtists />
+                            </div>
+                            <div className='col-md-6 mt-3 mt-md-0'>
+                                <TopTracks />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
