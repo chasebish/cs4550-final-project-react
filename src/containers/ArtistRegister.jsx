@@ -27,7 +27,7 @@ class ArtistRegisterComponent extends React.Component {
 
     register = () => {
 
-        this.userService.findUserById(this.state.username)
+        this.userService.findUserByUsername(this.state.username)
             .then(user => {
                 alert(`"${user.username}" username is already taken`)
                 return

@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 import { userActions } from '../constants'
 import { UserService } from '../services'
 
+import './containers.css'
+
 class ProfileComponent extends React.Component {
 
     constructor(props) {
@@ -78,6 +80,26 @@ class ProfileComponent extends React.Component {
     updateLastName = event => this.setState({ lastName: event.target.value })
     updateEmail = event => this.setState({ email: event.target.value })
 
+    renderSongs = songs => {
+
+        let songCards = []
+
+        for (const song of songs) {
+            const card =
+                <div key={song.id} className='col-xl-4 col-md-6 mt-3'>
+                    <div className="card border-info">
+                        <div className="card-body text-info">
+                            <h5 className="card-title">{song.title}</h5>
+                            <p className="card-text">Add Song Button</p>
+                        </div>
+                    </div>
+                </div>
+
+            songCards.push(card)
+        }
+        return songCards
+    }
+
     render() {
         return (
             <div className='jumbotron'>
@@ -90,7 +112,7 @@ class ProfileComponent extends React.Component {
                 {this.props.user && this.props.user.role === 'ARTIST' &&
                     <h1 className="display-3">Artist Profile</h1>
                 }
-                <p className="lead">Welcome {this.props.user.username}</p>
+                <h4 className="font-weight-light">Welcome {this.props.user.username}</h4>
                 <div className="mt-3">
                     <div className="form-group row">
                         <label htmlFor="username" className="col-sm-3 col-md-2 col-form-label lead">Username</label>
@@ -128,6 +150,15 @@ class ProfileComponent extends React.Component {
                     <button onClick={() => this.logout()} className='btn btn-outline-danger btn-block mt-2'>
                         Logout
                     </button>
+
+                    {this.props.user && this.props.user.role === 'ARTIST' &&
+                        <div className='mt-5'>
+                            <h4 className="font-weight-light">Your Songs</h4>
+                            <div className='row'>
+                                {this.renderSongs(this.props.user.uploads)}
+                            </div>
+                        </div>
+                    }
                     {this.state.showAlert &&
                         <div className="alert alert-success text-center mt-3" role="alert">
                             Profile Updated!
