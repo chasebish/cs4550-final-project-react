@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 
 import { SongService } from '../services'
-import { userActions } from '../constants'
 
 class ArtistRegisterComponent extends React.Component {
 
@@ -78,7 +77,6 @@ class ArtistRegisterComponent extends React.Component {
 
 ArtistRegisterComponent.propTypes = {
     history: PropTypes.object,
-    setUser: PropTypes.func,
     user: PropTypes.object
 }
 
@@ -88,11 +86,5 @@ const mapStateToProps = state => (
     }
 )
 
-const mapDispatchToProps = dispatch => (
-    {
-        setUser: user => dispatch({ type: userActions.SET_USER, user })
-    }
-)
-
-const ArtistRegister = connect(mapStateToProps, mapDispatchToProps)(ArtistRegisterComponent)
+const ArtistRegister = connect(mapStateToProps)(ArtistRegisterComponent)
 export default ArtistRegister
