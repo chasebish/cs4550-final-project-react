@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 
 const ArtistListItem = ({ artist, rank }) => (
     <li className='list-group-item'>
-        {/* {console.log(artist)} */}
-        <h4>#{rank} {artist.name}</h4>
+        <h5 className='font-weight-light'>#{rank} {artist.name}</h5>
     </li>
 )
 

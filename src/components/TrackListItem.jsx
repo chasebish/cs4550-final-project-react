@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const TrackListItem = ({ track, rank }) => (
     <li className='list-group-item'>
-        <h4>#{rank} {track.name}</h4>
+        <h5 className='font-weight-light'>#{rank} {track.name}</h5>
     </li>
 )
 

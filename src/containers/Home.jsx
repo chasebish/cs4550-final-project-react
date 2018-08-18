@@ -24,17 +24,19 @@ class HomeComponent extends React.Component {
         return (
             <div>
                 <h1 className='display-4'>aMused</h1>
-                <div className='row'>
-                    <div className='col-xl-6'>
-                        <h1>USER FEEEED</h1>
-                    </div>
-                    <div className='col-xl-6 mt-5 mt-xl-0'>
-                        <div className='row'>
-                            <div className='col-md-6'>
-                                <TopArtists />
-                            </div>
-                            <div className='col-md-6 mt-3 mt-md-0'>
-                                <TopTracks />
+                <div className='jumbotron bg-light pt-5'>
+                    <h1 className='font-weight-light mb-2'>Your Feed</h1>
+                    <div className='row'>
+                        <div className='col-xl-6'>
+                        </div>
+                        <div className='col-xl-6 mt-5 mt-xl-0'>
+                            <div className='row'>
+                                <div className='col-md-6'>
+                                    <TopArtists />
+                                </div>
+                                <div className='col-md-6 mt-3 mt-md-0'>
+                                    <TopTracks />
+                                </div>
                             </div>
                         </div>
                     </div>

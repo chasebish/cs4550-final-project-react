@@ -27,7 +27,9 @@ class RegisterComponent extends React.Component {
 
     register = () => {
 
-        this.userService.findUserById(this.state.username)
+        console.log(this.state.username)
+
+        this.userService.findUserByUsername(this.state.username)
             .then(user => {
                 alert(`"${user.username}" username is already taken`)
                 return
@@ -48,6 +50,8 @@ class RegisterComponent extends React.Component {
                     role: 'REVIEWER'
                 }
 
+                console.log(user)
+
                 this.userService.registerUser(user)
                     .then(user => {
                         this.props.setUser(user)
@@ -62,9 +66,9 @@ class RegisterComponent extends React.Component {
             <div className='jumbotron bg-light'>
                 <h1 className='display-3'>Register</h1>
                 <div className='form-group row'>
-                    <label htmlFor="email" className="col-sm-2 col-form-label">Username</label>
+                    <label htmlFor="username" className="col-sm-2 col-form-label">Username</label>
                     <div className="col-sm-10">
-                        <input value={this.state.username} onChange={this.updateUsername} className="form-control" id="email" placeholder="Username" />
+                        <input value={this.state.username} onChange={this.updateUsername} className="form-control" id="username" placeholder="Username" />
                     </div>
                 </div>
                 <div className='form-group row'>

@@ -8,7 +8,7 @@ const TopArtistsComponent = ({ topArtists }) => (
     <div>
         <ul className='list-group'>
             <li className='list-group-item'>
-                <h3>Top Artists</h3>
+                <h3 className='font-weight-light'>Top Artists</h3>
             </li>
             {renderArtists(topArtists)}
         </ul>
@@ -25,7 +25,7 @@ const renderArtists = (topArtists) => {
         />
     ))
 
-    return artists.slice(0, 10)
+    return artists.slice(0, 15)
 
 }
 
