@@ -23,7 +23,7 @@ class HomeComponent extends React.Component {
     render() {
         return (
             <div>
-                <h1>Home</h1>
+                <h1 className='display-4'>aMused</h1>
                 <div className='row'>
                     <div className='col-md-6 col-xl-3'>
                         <TopArtists />
