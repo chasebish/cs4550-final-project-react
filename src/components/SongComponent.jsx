@@ -21,7 +21,9 @@ class SongComponent extends React.Component {
             this.setImage(this.song.track.album.image[3]['#text'])
             this.setTitle(this.song.track.name)
             this.setArtist(this.song.track.artist.name)
-            this.setWiki(this.song.track.wiki.summary)
+            if (this.song.track.wiki) {
+                this.setWiki(this.song.track.wiki.summary)
+            }
         }
     }
 
