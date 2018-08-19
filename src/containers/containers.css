@@ -2,3 +2,29 @@
     max-width: 18rem;
 }
 
+.chaseContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.videoDesc {
+    border-style: solid;
+    border-radius: 5px;
+    border-width: thin;
+    border-color: rgb(175, 175, 175);
+    /* border-color: whitesmoke */
+}
+
+@media (min-width: 992px) {
+    .leftMargin {
+        margin-left: 10px;
+    }
+}
+
+.minus-m-b-20 {
+    margin-bottom: -20px;
+}
+
+.reviewTextArea {
+    height: 200px;
+}

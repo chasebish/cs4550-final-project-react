@@ -15,6 +15,17 @@ export default class UserService {
         return this[_singleton]
     }
 
+    createUser = user =>
+        fetch(`${SERVER_URL}/user`, {
+            body: JSON.stringify(user),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST'
+        })
+            .then(response => response.json())
+
     findAllUsers = () =>
         fetch(`${SERVER_URL}/user`)
             .then(response => response.json())

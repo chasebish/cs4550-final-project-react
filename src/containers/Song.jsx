@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Modal, ModalBody, ModalFooter} from 'reactstrap'
+import { Modal, ModalBody, ModalFooter } from 'reactstrap'
 
 import SongService from '../services/SongService'
 import UserService from '../services/UserService'
@@ -34,7 +34,48 @@ class SongClass extends React.Component {
             .then(song => {
                 this.setSong(song)
                 this.setName(song.track.name)
+
+                // Adds Artist and Song to the database if they don't exist yet
+                this.addArtistAndSong(song.track)
+
             }, () => console.warn('Could not find song'))
+    }
+
+    addArtistAndSong = song => {
+
+        this.userService.findUserByUsername(song.artist.name)
+            .then(artist => {
+                this.addSong(artist, song)
+            }, () => {
+
+                const newArtistUser = {
+                    username: song.artist.name,
+                    password: 'new-artist-password',
+                    role: 'ARTIST'
+                }
+
+                this.userService.createUser(newArtistUser)
+                    .then(artist => {
+                        this.addSong(artist, song)
+                    }, () => console.warn('ERROR CREATING ARTIST'))
+            })
+
+    }
+
+    addSong = (artist, song) => {
+        const id = `${song.name.replace(/\s/g,'').toLowerCase()}-${artist.username.toLowerCase()}`
+        this.songService.findSongById(id)
+            .then(song => {
+                console.log('song exists', song)
+            }, () => {
+                const newSong = {
+                    title: song.name,
+                    artistName: artist.username,
+                    songType: 'API'
+                }
+                this.songService.createSong(newSong)
+                    .then(() => console.log('song created'), () => console.warn('no creation'))
+            })
     }
 
     updateReviewText = event => this.setState({ reviewText: event.target.value })
@@ -130,9 +171,7 @@ class SongClass extends React.Component {
     renderTags = () => {
         if (typeof this.state.song.track !== 'undefined') {
             let tags = []
-            this.state.song.track.toptags.tag.map(tag => {
-                tags.push(<li className='btn btn-light mr-3 ml-3'>{tag.name}</li>)
-            })
+            this.state.song.track.toptags.tag.map((tag, index) => tags.push(<li key={index} className='btn btn-light mr-3 ml-3 mt-2'>{tag.name}</li>))
             return tags
         }
     }
@@ -148,10 +187,8 @@ class SongClass extends React.Component {
                 </div>
                 <div className='text-center mt-2'>
                     {/* {this.props.user. ? */}
-                    <button onClick={() => this.openModal()} className='btn btn-primary btn-block mt-2 mb-2'>Add Review</button>
-                    {/* //     :
-                    //     <button onClick={() => this.openModal()} className='btn btn-primary btn-block mt-2 mb-2 disabled' disabled>Add Review</button>
-                    // } */}
+                    <button onClick={() => this.openModal()} className='btn btn-primary btn-block mt-3 mb-2'>Add Review</button>
+
                     <div className='row justify-content-center minus-m-b-20'>
                         <p className='text-primary col-3'>Listeners</p>
                         <p className='text-success col-3'>Playcount</p>

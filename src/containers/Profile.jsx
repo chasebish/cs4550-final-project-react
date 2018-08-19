@@ -46,7 +46,7 @@ class ProfileComponent extends React.Component {
         user.firstName !== null && this.setFirstName(user.firstName)
         user.lastName !== null && this.setLastName(user.lastName)
         user.email !== null && this.setEmail(user.email)
-        this.songService.artistSearch(this.state.username)
+        this.songService.artistSearch(user.username)
             .then(searchSongs => {
                 this.props.setSearchSongs(searchSongs)
             }, () => {
@@ -90,13 +90,11 @@ class ProfileComponent extends React.Component {
     updateEmail = event => this.setState({ email: event.target.value })
 
     renderSongs = songs => {
-
         let songCards = []
-        let c = 0
         if (songs) {
             for (const song of songs) {
                 const card =
-                    <div key={c} className='col-xl-4 col-md-6 mt-3'>
+                    <div key={song.title} className='col-xl-4 col-md-6 mt-3'>
                         <div className="card border-info">
                             <div className="card-body text-info">
                                 <h5 className="card-title">{song.title}</h5>
@@ -105,13 +103,17 @@ class ProfileComponent extends React.Component {
                         </div>
                     </div>
                 songCards.push(card)
-                c++
             }
         }
+        return songCards
+    }
+
+    renderApiSongs = () => {
+        let songCards = []
         if (this.props.searchSongs.toptracks) {
             for (let song of this.props.searchSongs.toptracks.track) {
                 const component =
-                    <div key={c} className='col-xl-4 col-md-6 mt-3'>
+                    <div key={song.name} className='col-xl-4 col-md-6 mt-3'>
                         <div className="card border-info">
                             <div className="card-body text-info">
                                 <h5 className="card-title">{song.name}</h5>
@@ -120,7 +122,6 @@ class ProfileComponent extends React.Component {
                         </div>
                     </div>
                 songCards.push(component)
-                c++
             }
         }
         return songCards
@@ -179,9 +180,13 @@ class ProfileComponent extends React.Component {
 
                     {this.props.user && this.props.user.role === 'ARTIST' &&
                         <div className='mt-5'>
-                            <h4 className="font-weight-light">Your Songs</h4>
+                            <h4 className="font-weight-light">Your aMused Songs</h4>
                             <div className='row'>
                                 {this.renderSongs(this.props.user.uploads)}
+                            </div>
+                            <h4 className="font-weight-light mt-3">Your LastFM Songs</h4>
+                            <div className='row'>
+                                {this.renderApiSongs()}
                             </div>
                         </div>
                     }
@@ -200,7 +205,7 @@ class ProfileComponent extends React.Component {
 ProfileComponent.propTypes = {
     history: PropTypes.object,
     user: PropTypes.object,
-    setSearchSongs: PropTypes.func,
+    setSearchSongs: PropTypes.any,
     searchSongs: PropTypes.object,
     setUser: PropTypes.func
 }
