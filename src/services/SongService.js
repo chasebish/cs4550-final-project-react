@@ -2,6 +2,9 @@
 
 import { SERVER_URL } from '../constants'
 
+const SONG_URL = 'http://ws.audioscrobbler.com/2.0/'
+const API_KEY = 'c758ebc39655796f64621b54221d1477'
+
 let _singleton = Symbol()
 
 export default class SongService {
@@ -20,11 +23,11 @@ export default class SongService {
             .then(response => response.json())
 
     songSearch = query =>
-        fetch(`${SERVER_URL}/song/search/${query}`)
+        fetch(`${SONG_URL}?method=track.search&track=${query}&api_key=${API_KEY}&format=json`)
             .then(response => response.json())
 
-    findSongById = id =>
-        fetch(`${SERVER_URL}/song/${id}`)
+    findSongByArtistAndTrack = (artist, track) =>
+        fetch(`${SONG_URL}?method=track.getInfo&api_key=${API_KEY}&artist=${artist}&track=${track}&format=json`)
             .then(response => response.json())
 
     findSongBySongId = songId =>
