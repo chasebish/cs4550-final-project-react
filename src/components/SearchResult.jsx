@@ -17,7 +17,9 @@ export default class SearchResult extends React.Component {
     componentWillReceiveProps(newProps) {
         this.setSong(newProps.song)
         if (typeof this.song.name !== 'undefined') {
-            this.setImage(this.song.image[2]['#text'])
+            if (this.song.image) {
+                this.setImage(this.song.image[2]['#text'])
+            }
             this.setTitle(this.song.name)
             this.setArtist(this.song.artist)
         }

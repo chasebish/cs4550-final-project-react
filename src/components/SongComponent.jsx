@@ -18,7 +18,9 @@ class SongComponent extends React.Component {
     componentWillReceiveProps(newProps) {
         this.setSong(newProps.song)
         if (typeof this.song.track !== 'undefined') {
-            this.setImage(this.song.track.album.image[3]['#text'])
+            if (this.song.track.album) {
+                this.setImage(this.song.track.album.image[3]['#text'])
+            }
             this.setTitle(this.song.track.name)
             this.setArtist(this.song.track.artist.name)
             if (this.song.track.wiki) {
