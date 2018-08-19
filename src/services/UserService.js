@@ -96,6 +96,10 @@ export default class UserService {
         fetch(`${SERVER_URL}/user/username/${username}`)
             .then(response => response.json())
 
+    searchUsers = username => 
+        fetch(`${SERVER_URL}/user/search/${username}`)
+            .then(response => response.json())
+    
     getProfile = () =>
         fetch(`${SERVER_URL}/profile`, {
             credentials: 'include'
