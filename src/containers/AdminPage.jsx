@@ -1,5 +1,5 @@
 import React from 'react'
-import UserService from "../services/UserService"
+import { UserService } from '../services'
 
 export default class AdminPage extends React.Component {
 
@@ -9,7 +9,12 @@ export default class AdminPage extends React.Component {
         this.state = {
             users: [],
             editing: false,
-            role: "REVIEWER"
+            role: 'REVIEWER',
+            username: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+            email: ''
         }
     }
 
@@ -23,8 +28,8 @@ export default class AdminPage extends React.Component {
     }
 
     renderUsers = () => {
-        var rows = this.state.users.map(user =>
-            <tr>
+        var rows = this.state.users.map((user, index) =>
+            <tr key={index}>
                 <td>{user.username}</td>
                 <td>{user.password}</td>
                 <td>{user.firstName}</td>
@@ -32,10 +37,10 @@ export default class AdminPage extends React.Component {
                 <td>{user.email}</td>
                 <td>{user.role}</td>
                 <td>
-                    <span class="btn btn-outline-danger" onClick={() => this.onDeleteClicked(user.id)}>Delete</span>
+                    <span className='btn btn-outline-danger' onClick={() => this.onDeleteClicked(user.id)}>Delete</span>
                 </td>
                 <td>
-                    <span class="btn btn-outline-info" onClick={() => this.onEditClicked(user)}>Edit</span>
+                    <span className='btn btn-outline-info' onClick={() => this.onEditClicked(user)}>Edit</span>
                 </td>
             </tr>
         )
@@ -56,11 +61,11 @@ export default class AdminPage extends React.Component {
                     .then(users => {
                         this.setState({
                             users: users,
-                            username: "",
-                            password: "",
-                            firstName: "",
-                            lastName: "",
-                            email: ""
+                            username: '',
+                            password: '',
+                            firstName: '',
+                            lastName: '',
+                            email: ''
                         })
                     })
             })
@@ -105,11 +110,11 @@ export default class AdminPage extends React.Component {
                     this.setState({
                         users: users,
                         editing: false,
-                        username: "",
-                        password: "",
-                        firstName: "",
-                        lastName: "",
-                        email: ""
+                        username: '',
+                        password: '',
+                        firstName: '',
+                        lastName: '',
+                        email: ''
                     })
                 })
         })
@@ -153,8 +158,8 @@ export default class AdminPage extends React.Component {
 
     render() {
         return (
-            <div class="table-responsive">
-                <table class="table">
+            <div className='table-responsive'>
+                <table className='table'>
                     <thead>
                         <tr>
                             <th>Username</th>
@@ -167,27 +172,27 @@ export default class AdminPage extends React.Component {
                             <th>&nbsp;</th>
                         </tr>
                     </thead>
-                    <tr>
-                        <td><input id="usernameFld" class="form-control" type="text"
-                            placeholder="Username" onChange={this.onUsernameUpdated} value={this.state.username} /></td>
-                        <td><input id="passwordFld" class="form-control"
-                            placeholder="Password" onChange={this.onPasswordUpdated} value={this.state.password} /></td>
-                        <td><input id="firstNameFld" class="form-control"
-                            placeholder="First Name" onChange={this.onFirstNameUpdated} value={this.state.firstName} /></td>
-                        <td><input id="lastNameFld" class="form-control"
-                            placeholder="Last Name" onChange={this.onLastNameUpdated} value={this.state.lastName} /></td>
-                        <td><input class="form-control"
-                            placeholder="Email" onChange={this.onEmailUpdated} value={this.state.email} /></td>
-                        <td><select class="form-control" onChange={this.onRoleUpdated} value={this.state.role}>
-                            <option value="REVIEWER">Reviewer</option>
-                            <option value="ARTIST">Artist</option>
-                            <option value="ADMIN">Admin</option>
-                        </select></td>
-                        <td><span class="btn btn-outline-info" onClick={() => this.onAddClicked()} hidden={this.state.editing}>Add</span>
-                            <span class="btn btn-outline-info" onClick={() => this.onSaveClicked()} hidden={!this.state.editing}>Save</span>
-                        </td>
-                    </tr>
                     <tbody>
+                        <tr>
+                            <td><input id='usernameFld' className='form-control' type='text'
+                                placeholder='Username' onChange={this.onUsernameUpdated} value={this.state.username} /></td>
+                            <td><input id='passwordFld' className='form-control'
+                                placeholder='Password' onChange={this.onPasswordUpdated} value={this.state.password} /></td>
+                            <td><input id='firstNameFld' className='form-control'
+                                placeholder='First Name' onChange={this.onFirstNameUpdated} value={this.state.firstName} /></td>
+                            <td><input id='lastNameFld' className='form-control'
+                                placeholder='Last Name' onChange={this.onLastNameUpdated} value={this.state.lastName} /></td>
+                            <td><input className='form-control'
+                                placeholder='Email' onChange={this.onEmailUpdated} value={this.state.email} /></td>
+                            <td><select className='form-control' onChange={this.onRoleUpdated} value={this.state.role}>
+                                <option value='REVIEWER'>Reviewer</option>
+                                <option value='ARTIST'>Artist</option>
+                                <option value='ADMIN'>Admin</option>
+                            </select></td>
+                            <td><span className='btn btn-outline-info' onClick={() => this.onAddClicked()} hidden={this.state.editing}>Add</span>
+                                <span className='btn btn-outline-info' onClick={() => this.onSaveClicked()} hidden={!this.state.editing}>Save</span>
+                            </td>
+                        </tr>
                         {this.renderUsers()}
                     </tbody>
                 </table>
