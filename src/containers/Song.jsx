@@ -68,7 +68,7 @@ class SongClass extends React.Component {
     }
 
     addSong = (artist, song) => {
-        const id = `${song.name.replace(/\s/g, '').toLowerCase()}-${artist.username.toLowerCase()}`
+        const id = `${song.name.replace(/\s/g, '').toLowerCase()}-${artist.username.replace(/\s/g, '').toLowerCase()}`
         this.songService.findSongById(id)
             .then(song => {
                 this.setSongID(song.id)

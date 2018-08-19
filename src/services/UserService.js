@@ -55,7 +55,7 @@ export default class UserService {
         fetch(`${SERVER_URL}/user/` + id, {
             method: 'DELETE'
         })
-        .then(response => response)
+            .then(response => response)
 
     loginUser = user =>
         fetch(`${SERVER_URL}/login`, {
