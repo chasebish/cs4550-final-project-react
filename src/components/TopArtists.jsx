@@ -7,7 +7,7 @@ import { ArtistListItem } from '.'
 const TopArtistsComponent = ({ topArtists }) => (
     <div>
         <ul className='list-group'>
-            <li className='list-group-item'>
+            <li className='list-group-item list-group-item-info'>
                 <h3 className='font-weight-light'>Top Artists</h3>
             </li>
             {renderArtists(topArtists)}
@@ -25,7 +25,7 @@ const renderArtists = (topArtists) => {
         />
     ))
 
-    return artists.slice(0, 15)
+    return artists.slice(0, 10)
 
 }
 

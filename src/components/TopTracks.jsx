@@ -7,7 +7,7 @@ import { TrackListItem } from '.'
 const TopTracksComponent = ({ topTracks }) => (
     <div>
         <ul className='list-group'>
-            <li className='list-group-item'>
+            <li className='list-group-item list-group-item-primary'>
                 <h3 className='font-weight-light'>Top Tracks</h3>
             </li>
             {renderTracks(topTracks)}
@@ -25,7 +25,7 @@ const renderTracks = (topTracks) => {
         />
     ))
 
-    return tracks.slice(0, 15)
+    return tracks.slice(0, 10)
 
 }
 
