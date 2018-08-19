@@ -41,6 +41,22 @@ export default class UserService {
         })
             .then(response => response.json())
 
+    addUser = user =>
+        fetch(`${SERVER_URL}/user`, {
+            body: JSON.stringify(user),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST'
+        })
+            .then(response => response.json())
+
+    deleteUser = id =>
+        fetch(`${SERVER_URL}/user/` + id, {
+            method: 'DELETE'
+        })
+        .then(response => response)
+
     loginUser = user =>
         fetch(`${SERVER_URL}/login`, {
             body: JSON.stringify(user),
