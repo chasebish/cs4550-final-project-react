@@ -55,7 +55,7 @@ export default class UserService {
         fetch(`${SERVER_URL}/user/` + id, {
             method: 'DELETE'
         })
-        .then(response => response)
+            .then(response => response)
 
     loginUser = user =>
         fetch(`${SERVER_URL}/login`, {
@@ -96,6 +96,10 @@ export default class UserService {
         fetch(`${SERVER_URL}/user/username/${username}`)
             .then(response => response.json())
 
+    searchUsers = username => 
+        fetch(`${SERVER_URL}/user/search/${username}`)
+            .then(response => response.json())
+    
     getProfile = () =>
         fetch(`${SERVER_URL}/profile`, {
             credentials: 'include'

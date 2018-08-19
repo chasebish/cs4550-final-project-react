@@ -54,7 +54,7 @@ class SearchComponent extends React.Component {
             .then(searchSongs => {
                 this.setState({ amusedSongs: searchSongs })
             })
-        this.userService.findUserByUsername(this.props.match.params.query)
+        this.userService.searchUsers(this.props.match.params.query)
             .then(searchUsers => {
                 this.setState({ users: searchUsers })
             })
