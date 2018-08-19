@@ -82,7 +82,7 @@ class SearchComponent extends React.Component {
     
 SearchComponent.propTypes = {
     match: PropTypes.object,
-    searchSongs: PropTypes.object,
+    searchSongs: PropTypes.any,
     setSearchSongs: PropTypes.func,
     removeSearchsongs: PropTypes.func
 }
