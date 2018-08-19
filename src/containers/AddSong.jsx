@@ -31,7 +31,8 @@ class ArtistRegisterComponent extends React.Component {
 
         const newSong = {
             title: this.state.songName,
-            artistName: this.props.user.username
+            artistName: this.props.user.username,
+            songType: 'CUSTOM'
         }
 
         this.songService.createSong(newSong)

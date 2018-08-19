@@ -32,7 +32,7 @@ export default class SearchResult extends React.Component {
         return (
             <div>
                 <div className="float-left mr-3">
-                    <img className="mr-3 float-left" src={this.state.image}></img>
+                    <img className="mr-3 float-left" src={this.state.image} alt='song-thumbnail'></img>
                 </div>
                 <div>
                     <Link to={`/song/${this.props.song.artist}/${this.props.song.name}`}><h3>{this.props.song.artist} - {this.props.song.name}</h3></Link>

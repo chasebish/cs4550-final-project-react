@@ -41,7 +41,7 @@ class SongComponent extends React.Component {
         return (
             <div>
                 <div className="float-left mr-3">
-                    <img className="song-image mr-3 float-left" src={this.image}></img>
+                    <img className="song-image mr-3" src={this.image} alt="album-cover"></img>
                 </div>
                 <div>
                     <h3>{this.artist} - {this.title}</h3>

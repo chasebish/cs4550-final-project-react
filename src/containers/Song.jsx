@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Modal, ModalBody, ModalFooter} from 'reactstrap'
+import { Modal, ModalBody, ModalFooter } from 'reactstrap'
 
-import SongService from '../services/SongService'
-import UserService from '../services/UserService'
+import { SongService, UserService, ReviewService, RatingService } from '../services'
 import SongComponent from '../components/SongComponent'
+
+import './containers.css'
 
 class SongClass extends React.Component {
 
@@ -13,6 +14,8 @@ class SongClass extends React.Component {
         super(props)
         this.songService = SongService.instance
         this.userService = UserService.instance
+        this.reviewService = ReviewService.instance
+        this.ratingService = RatingService.instance
     }
 
     state = {
@@ -24,8 +27,10 @@ class SongClass extends React.Component {
         rating: {
             overall: undefined,
             production: undefined,
-            cuteness: undefined,
-            sadness: undefined
+            vocals: undefined,
+            instrumentals: undefined,
+            lyricism: undefined,
+            emotion: undefined
         }
     }
 
@@ -34,7 +39,48 @@ class SongClass extends React.Component {
             .then(song => {
                 this.setSong(song)
                 this.setName(song.track.name)
+
+                // Adds Artist and Song to the database if they don't exist yet
+                this.addArtistAndSong(song.track)
+
             }, () => console.warn('Could not find song'))
+    }
+
+    addArtistAndSong = song => {
+
+        this.userService.findUserByUsername(song.artist.name)
+            .then(artist => {
+                this.addSong(artist, song)
+            }, () => {
+
+                const newArtistUser = {
+                    username: song.artist.name,
+                    password: 'new-artist-password',
+                    role: 'ARTIST'
+                }
+
+                this.userService.createUser(newArtistUser)
+                    .then(artist => {
+                        this.addSong(artist, song)
+                    }, () => console.warn('ERROR CREATING ARTIST'))
+            })
+
+    }
+
+    addSong = (artist, song) => {
+        const id = `${song.name.replace(/\s/g, '').toLowerCase()}-${artist.username.toLowerCase()}`
+        this.songService.findSongById(id)
+            .then(song => {
+                this.setSongID(song.id)
+            }, () => {
+                const newSong = {
+                    title: song.name,
+                    artistName: artist.username,
+                    songType: 'API'
+                }
+                this.songService.createSong(newSong)
+                    .then(() => console.log('song created'), () => console.warn('no creation'))
+            })
     }
 
     updateReviewText = event => this.setState({ reviewText: event.target.value })
@@ -58,24 +104,35 @@ class SongClass extends React.Component {
             ratingType: 'PRODUCTION',
             ratingValue: this.state.rating.production
         }
-        const cutenessRating = {
-            ratingType: 'CUTENESS',
-            ratingValue: this.state.rating.cuteness
+        const vocalsRating = {
+            ratingType: 'VOCALS',
+            ratingValue: this.state.rating.production
         }
-        const sadnessRating = {
-            ratingType: 'SADNESS',
-            ratingValue: this.state.rating.sadness
+        const instrumentalsRating = {
+            ratingType: 'INSTRUMENTATION',
+            ratingValue: this.state.rating.production
+        }
+        const lyricismRating = {
+            ratingType: 'LYRICISM',
+            ratingValue: this.state.rating.production
+        }
+        const emotionRating = {
+            ratingType: 'EMOTION',
+            ratingValue: this.state.rating.production
         }
 
-        this.reviewService.createReview(this.state.song.id, review)
+        this.reviewService.createReview(this.state.songID, review)
             .then(review => {
                 this.ratingService.createRating(review.id, overallRating)
                 this.ratingService.createRating(review.id, productionRating)
-                this.ratingService.createRating(review.id, cutenessRating)
-                this.ratingService.createRating(review.id, sadnessRating)
-                this.songService.findSongById(this.props.match.params.songId)
+                this.ratingService.createRating(review.id, vocalsRating)
+                this.ratingService.createRating(review.id, instrumentalsRating)
+                this.ratingService.createRating(review.id, lyricismRating)
+                this.ratingService.createRating(review.id, emotionRating)
+                this.songService.findSongBySongId(this.state.songID)
                     .then(song => {
-                        this.setSong(song)
+                        // this.setSong(song)
+                        console.log('amused song', song)
                     }, () => console.warn('Could not find song'))
                 this.closeModal()
             }, () => console.warn('Could not post review'))
@@ -83,7 +140,8 @@ class SongClass extends React.Component {
     }
 
     disableSubmitRating = () =>
-        !(this.state.rating.overall >= 0) || !(this.state.rating.humor >= 0) || !(this.state.rating.informative >= 0) || !(this.state.rating.production >= 0) || !(this.state.rating.cuteness >= 0) || !(this.state.rating.sadness >= 0) || this.state.reviewText.length === 0
+        !(this.state.rating.overall >= 0) || !(this.state.rating.emotion >= 0) || !(this.state.rating.lyricism >= 0) || !(this.state.rating.production >= 0) ||
+        !(this.state.rating.vocals >= 0) || !(this.state.rating.instrumentals >= 0) || this.state.reviewText.length === 0
 
     selectOverall = overall => {
         const rating = { ...this.state.rating }
@@ -95,14 +153,24 @@ class SongClass extends React.Component {
         rating.production = production
         this.setState({ rating })
     }
-    selectCuteness = cuteness => {
+    selectVocals = vocals => {
         const rating = { ...this.state.rating }
-        rating.cuteness = cuteness
+        rating.vocals = vocals
         this.setState({ rating })
     }
-    selectSadness = sadness => {
+    selectInstrumentals = instrumentals => {
         const rating = { ...this.state.rating }
-        rating.sadness = sadness
+        rating.instrumentals = instrumentals
+        this.setState({ rating })
+    }
+    selectLyricism = lyricism => {
+        const rating = { ...this.state.rating }
+        rating.lyricism = lyricism
+        this.setState({ rating })
+    }
+    selectEmotion = emotion => {
+        const rating = { ...this.state.rating }
+        rating.emotion = emotion
         this.setState({ rating })
     }
 
@@ -116,13 +184,23 @@ class SongClass extends React.Component {
             return 'active'
         }
     }
-    cutenessActive = rating => {
-        if (rating === this.state.rating.cuteness) {
+    vocalsActive = rating => {
+        if (rating === this.state.rating.vocals) {
             return 'active'
         }
     }
-    sadnessActive = rating => {
-        if (rating === this.state.rating.sadness) {
+    instrumentalsActive = rating => {
+        if (rating === this.state.rating.instrumentals) {
+            return 'active'
+        }
+    }
+    lyricismActive = rating => {
+        if (rating === this.state.rating.lyricism) {
+            return 'active'
+        }
+    }
+    emotionActive = rating => {
+        if (rating === this.state.rating.emotion) {
             return 'active'
         }
     }
@@ -130,9 +208,7 @@ class SongClass extends React.Component {
     renderTags = () => {
         if (typeof this.state.song.track !== 'undefined') {
             let tags = []
-            this.state.song.track.toptags.tag.map(tag => {
-                tags.push(<li className='btn btn-light mr-3 ml-3'>{tag.name}</li>)
-            })
+            this.state.song.track.toptags.tag.map((tag, index) => tags.push(<li key={index} className='btn btn-light mr-3 ml-3 mt-2'>{tag.name}</li>))
             return tags
         }
     }
@@ -147,11 +223,13 @@ class SongClass extends React.Component {
                     <SongComponent song={this.state.song} />
                 </div>
                 <div className='text-center mt-2'>
-                    {/* {this.props.user. ? */}
-                    <button onClick={() => this.openModal()} className='btn btn-primary btn-block mt-2 mb-2'>Add Review</button>
-                    {/* //     :
-                    //     <button onClick={() => this.openModal()} className='btn btn-primary btn-block mt-2 mb-2 disabled' disabled>Add Review</button>
-                    // } */}
+                    {this.props.user.username &&
+                        <button onClick={() => this.openModal()} className='btn btn-primary btn-block mt-3 mb-2'>Add Review</button>
+                    }
+                    {!this.props.user.username &&
+                        <button className='btn btn-primary btn-block mt-3 mb-2' disabled>Add Review</button>
+                    }
+
                     <div className='row justify-content-center minus-m-b-20'>
                         <p className='text-primary col-3'>Listeners</p>
                         <p className='text-success col-3'>Playcount</p>
@@ -167,11 +245,13 @@ class SongClass extends React.Component {
                 <div className='text-center mt-4'>
                     <div className='row justify-content-center m-b-neg-20'>
                         <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Overall</p>
+                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Production</p>
+                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Vocals</p>
                     </div>
                     <div className='row justify-content-center m-b-neg-20'>
-                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Production</p>
-                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Cuteness</p>
-                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Sadness</p>
+                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Instrumentals</p>
+                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Lyricism</p>
+                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Emotion</p>
                     </div>
                     {/* <div className='row justify-content-center'>
                         <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>{this.state.video.avgProduction}</p>
@@ -191,7 +271,7 @@ class SongClass extends React.Component {
                             <h5>&quot;{this.state.name}&quot;</h5>
                         </div>
                         <p className='lead'>Review</p>
-                        <textarea className='form-control mt-2' onChange={this.updateReviewText} rows={10}></textarea>
+                        <textarea className='form-control mt-2' onChange={this.updateReviewText} rows={6}></textarea>
                     </ModalBody>
                     <ModalBody>
                         <p className='lead'>Ratings</p>
@@ -224,33 +304,61 @@ class SongClass extends React.Component {
                                 <button onClick={() => this.selectProduction(9)} className={`btn btn-outline-info ${this.productionActive(9)}`}>9</button>
                                 <button onClick={() => this.selectProduction(10)} className={`btn btn-outline-info ${this.productionActive(10)}`}>10</button>
                             </div>
-                            <h6 className='font-weight-light mt-3'>Cuteness</h6>
+                            <h6 className='font-weight-light mt-3'>Vocals</h6>
                             <div className="btn-group">
-                                <button onClick={() => this.selectCuteness(0)} className={`btn btn-outline-info ${this.cutenessActive(0)}`}>0</button>
-                                <button onClick={() => this.selectCuteness(1)} className={`btn btn-outline-info ${this.cutenessActive(1)}`}>1</button>
-                                <button onClick={() => this.selectCuteness(2)} className={`btn btn-outline-info ${this.cutenessActive(2)}`}>2</button>
-                                <button onClick={() => this.selectCuteness(3)} className={`btn btn-outline-info ${this.cutenessActive(3)}`}>3</button>
-                                <button onClick={() => this.selectCuteness(4)} className={`btn btn-outline-info ${this.cutenessActive(4)}`}>4</button>
-                                <button onClick={() => this.selectCuteness(5)} className={`btn btn-outline-info ${this.cutenessActive(5)}`}>5</button>
-                                <button onClick={() => this.selectCuteness(6)} className={`btn btn-outline-info ${this.cutenessActive(6)}`}>6</button>
-                                <button onClick={() => this.selectCuteness(7)} className={`btn btn-outline-info ${this.cutenessActive(7)}`}>7</button>
-                                <button onClick={() => this.selectCuteness(8)} className={`btn btn-outline-info ${this.cutenessActive(8)}`}>8</button>
-                                <button onClick={() => this.selectCuteness(9)} className={`btn btn-outline-info ${this.cutenessActive(9)}`}>9</button>
-                                <button onClick={() => this.selectCuteness(10)} className={`btn btn-outline-info ${this.cutenessActive(10)}`}>10</button>
+                                <button onClick={() => this.selectVocals(0)} className={`btn btn-outline-info ${this.vocalsActive(0)}`}>0</button>
+                                <button onClick={() => this.selectVocals(1)} className={`btn btn-outline-info ${this.vocalsActive(1)}`}>1</button>
+                                <button onClick={() => this.selectVocals(2)} className={`btn btn-outline-info ${this.vocalsActive(2)}`}>2</button>
+                                <button onClick={() => this.selectVocals(3)} className={`btn btn-outline-info ${this.vocalsActive(3)}`}>3</button>
+                                <button onClick={() => this.selectVocals(4)} className={`btn btn-outline-info ${this.vocalsActive(4)}`}>4</button>
+                                <button onClick={() => this.selectVocals(5)} className={`btn btn-outline-info ${this.vocalsActive(5)}`}>5</button>
+                                <button onClick={() => this.selectVocals(6)} className={`btn btn-outline-info ${this.vocalsActive(6)}`}>6</button>
+                                <button onClick={() => this.selectVocals(7)} className={`btn btn-outline-info ${this.vocalsActive(7)}`}>7</button>
+                                <button onClick={() => this.selectVocals(8)} className={`btn btn-outline-info ${this.vocalsActive(8)}`}>8</button>
+                                <button onClick={() => this.selectVocals(9)} className={`btn btn-outline-info ${this.vocalsActive(9)}`}>9</button>
+                                <button onClick={() => this.selectVocals(10)} className={`btn btn-outline-info ${this.vocalsActive(10)}`}>10</button>
                             </div>
-                            <h6 className='font-weight-light mt-3'>Sadness</h6>
+                            <h6 className='font-weight-light mt-3'>Instrumentals</h6>
                             <div className="btn-group">
-                                <button onClick={() => this.selectSadness(0)} className={`btn btn-outline-info ${this.sadnessActive(0)}`}>0</button>
-                                <button onClick={() => this.selectSadness(1)} className={`btn btn-outline-info ${this.sadnessActive(1)}`}>1</button>
-                                <button onClick={() => this.selectSadness(2)} className={`btn btn-outline-info ${this.sadnessActive(2)}`}>2</button>
-                                <button onClick={() => this.selectSadness(3)} className={`btn btn-outline-info ${this.sadnessActive(3)}`}>3</button>
-                                <button onClick={() => this.selectSadness(4)} className={`btn btn-outline-info ${this.sadnessActive(4)}`}>4</button>
-                                <button onClick={() => this.selectSadness(5)} className={`btn btn-outline-info ${this.sadnessActive(5)}`}>5</button>
-                                <button onClick={() => this.selectSadness(6)} className={`btn btn-outline-info ${this.sadnessActive(6)}`}>6</button>
-                                <button onClick={() => this.selectSadness(7)} className={`btn btn-outline-info ${this.sadnessActive(7)}`}>7</button>
-                                <button onClick={() => this.selectSadness(8)} className={`btn btn-outline-info ${this.sadnessActive(8)}`}>8</button>
-                                <button onClick={() => this.selectSadness(9)} className={`btn btn-outline-info ${this.sadnessActive(9)}`}>9</button>
-                                <button onClick={() => this.selectSadness(10)} className={`btn btn-outline-info ${this.sadnessActive(10)}`}>10</button>
+                                <button onClick={() => this.selectInstrumentals(0)} className={`btn btn-outline-info ${this.instrumentalsActive(0)}`}>0</button>
+                                <button onClick={() => this.selectInstrumentals(1)} className={`btn btn-outline-info ${this.instrumentalsActive(1)}`}>1</button>
+                                <button onClick={() => this.selectInstrumentals(2)} className={`btn btn-outline-info ${this.instrumentalsActive(2)}`}>2</button>
+                                <button onClick={() => this.selectInstrumentals(3)} className={`btn btn-outline-info ${this.instrumentalsActive(3)}`}>3</button>
+                                <button onClick={() => this.selectInstrumentals(4)} className={`btn btn-outline-info ${this.instrumentalsActive(4)}`}>4</button>
+                                <button onClick={() => this.selectInstrumentals(5)} className={`btn btn-outline-info ${this.instrumentalsActive(5)}`}>5</button>
+                                <button onClick={() => this.selectInstrumentals(6)} className={`btn btn-outline-info ${this.instrumentalsActive(6)}`}>6</button>
+                                <button onClick={() => this.selectInstrumentals(7)} className={`btn btn-outline-info ${this.instrumentalsActive(7)}`}>7</button>
+                                <button onClick={() => this.selectInstrumentals(8)} className={`btn btn-outline-info ${this.instrumentalsActive(8)}`}>8</button>
+                                <button onClick={() => this.selectInstrumentals(9)} className={`btn btn-outline-info ${this.instrumentalsActive(9)}`}>9</button>
+                                <button onClick={() => this.selectInstrumentals(10)} className={`btn btn-outline-info ${this.instrumentalsActive(10)}`}>10</button>
+                            </div>
+                            <h6 className='font-weight-light mt-3'>Lyricism</h6>
+                            <div className="btn-group">
+                                <button onClick={() => this.selectLyricism(0)} className={`btn btn-outline-info ${this.lyricismActive(0)}`}>0</button>
+                                <button onClick={() => this.selectLyricism(1)} className={`btn btn-outline-info ${this.lyricismActive(1)}`}>1</button>
+                                <button onClick={() => this.selectLyricism(2)} className={`btn btn-outline-info ${this.lyricismActive(2)}`}>2</button>
+                                <button onClick={() => this.selectLyricism(3)} className={`btn btn-outline-info ${this.lyricismActive(3)}`}>3</button>
+                                <button onClick={() => this.selectLyricism(4)} className={`btn btn-outline-info ${this.lyricismActive(4)}`}>4</button>
+                                <button onClick={() => this.selectLyricism(5)} className={`btn btn-outline-info ${this.lyricismActive(5)}`}>5</button>
+                                <button onClick={() => this.selectLyricism(6)} className={`btn btn-outline-info ${this.lyricismActive(6)}`}>6</button>
+                                <button onClick={() => this.selectLyricism(7)} className={`btn btn-outline-info ${this.lyricismActive(7)}`}>7</button>
+                                <button onClick={() => this.selectLyricism(8)} className={`btn btn-outline-info ${this.lyricismActive(8)}`}>8</button>
+                                <button onClick={() => this.selectLyricism(9)} className={`btn btn-outline-info ${this.lyricismActive(9)}`}>9</button>
+                                <button onClick={() => this.selectLyricism(10)} className={`btn btn-outline-info ${this.lyricismActive(10)}`}>10</button>
+                            </div>
+                            <h6 className='font-weight-light mt-3'>Emotion</h6>
+                            <div className="btn-group">
+                                <button onClick={() => this.selectEmotion(0)} className={`btn btn-outline-info ${this.emotionActive(0)}`}>0</button>
+                                <button onClick={() => this.selectEmotion(1)} className={`btn btn-outline-info ${this.emotionActive(1)}`}>1</button>
+                                <button onClick={() => this.selectEmotion(2)} className={`btn btn-outline-info ${this.emotionActive(2)}`}>2</button>
+                                <button onClick={() => this.selectEmotion(3)} className={`btn btn-outline-info ${this.emotionActive(3)}`}>3</button>
+                                <button onClick={() => this.selectEmotion(4)} className={`btn btn-outline-info ${this.emotionActive(4)}`}>4</button>
+                                <button onClick={() => this.selectEmotion(5)} className={`btn btn-outline-info ${this.emotionActive(5)}`}>5</button>
+                                <button onClick={() => this.selectEmotion(6)} className={`btn btn-outline-info ${this.emotionActive(6)}`}>6</button>
+                                <button onClick={() => this.selectEmotion(7)} className={`btn btn-outline-info ${this.emotionActive(7)}`}>7</button>
+                                <button onClick={() => this.selectEmotion(8)} className={`btn btn-outline-info ${this.emotionActive(8)}`}>8</button>
+                                <button onClick={() => this.selectEmotion(9)} className={`btn btn-outline-info ${this.emotionActive(9)}`}>9</button>
+                                <button onClick={() => this.selectEmotion(10)} className={`btn btn-outline-info ${this.emotionActive(10)}`}>10</button>
                             </div>
                         </div>
                     </ModalBody>
@@ -276,10 +384,10 @@ SongClass.propTypes = {
 
 const mapStateToProps = state => (
     {
-        user: state.user.user
+        user: state.UserReducer.user
     }
 )
 
-connect(mapStateToProps)(SongClass)
+const Song = connect(mapStateToProps)(SongClass)
 
-export default SongClass
+export default Song

@@ -15,6 +15,17 @@ export default class UserService {
         return this[_singleton]
     }
 
+    createUser = user =>
+        fetch(`${SERVER_URL}/user`, {
+            body: JSON.stringify(user),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST'
+        })
+            .then(response => response.json())
+
     findAllUsers = () =>
         fetch(`${SERVER_URL}/user`)
             .then(response => response.json())
@@ -29,6 +40,22 @@ export default class UserService {
             method: 'POST'
         })
             .then(response => response.json())
+
+    addUser = user =>
+        fetch(`${SERVER_URL}/user`, {
+            body: JSON.stringify(user),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST'
+        })
+            .then(response => response.json())
+
+    deleteUser = id =>
+        fetch(`${SERVER_URL}/user/` + id, {
+            method: 'DELETE'
+        })
+        .then(response => response)
 
     loginUser = user =>
         fetch(`${SERVER_URL}/login`, {

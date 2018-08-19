@@ -84,4 +84,12 @@ export default class SongService {
         })
             .then(response => response.json())
 
+    findSongBySongId = id =>
+        fetch(`${SERVER_URL}/song/${id}`)
+            .then(response => response.json())
+
+    findSongById = id =>
+        fetch(`${SERVER_URL}/song/songId/${id}`)
+            .then(response => response.json())
+
 }

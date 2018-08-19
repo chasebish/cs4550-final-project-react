@@ -50,14 +50,19 @@ class CustomNavbarComponent extends React.Component {
                 <Collapse isOpen={this.state.isOpen} navbar>
                     <ul className="navbar-nav mr-auto">
                         {this.props.user.username &&
-                                <li className='nav-item'>
-                                    <div className='nav-link font-weight-light mb-2 mb-md-0 text-white-50'>User - {this.props.user.username}</div>
-                                </li>
+                            <li className='nav-item'>
+                                <div className='nav-link font-weight-light mb-2 mb-md-0 text-white-50'>User - {this.props.user.username}</div>
+                            </li>
                         }
                         {this.props.user.role && this.props.user.role === 'ARTIST' &&
-                                <li className="nav-item">
-                                    <Link to='/addsong' className='nav-link mb-2 mb-md-0'>Add a Song</Link>
-                                </li>
+                            <li className="nav-item">
+                                <Link to='/addsong' className='nav-link mb-2 mb-md-0'>Add a Song</Link>
+                            </li>
+                        }
+                        {this.props.user.role && this.props.user.role === 'ADMIN' &&
+                            <li className="nav-item">
+                                <Link to='/admin' className='nav-link mb-2 mb-md-0'>Admin Page</Link>
+                            </li>
                         }
                     </ul>
                     {!this.props.user.username &&
