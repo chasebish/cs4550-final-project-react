@@ -22,8 +22,12 @@ export default class SongService {
         fetch(`${SERVER_URL}/user`)
             .then(response => response.json())
 
-    songSearch = query =>
+    songSearchLast = query =>
         fetch(`${SONG_URL}?method=track.search&track=${query}&api_key=${API_KEY}&format=json`)
+            .then(response => response.json())
+
+    songSearchAmuse = query => 
+        fetch(`${SERVER_URL}/song/search/title/${query}`)
             .then(response => response.json())
 
     artistSearch = query =>

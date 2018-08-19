@@ -24,7 +24,7 @@ const songReducer = (state = initialState, action) => {
     case songActions.REMOVE_SEARCH_SONGS:
         return {
             ...state,
-            searchSongs: []
+            searchSongs: {}
         }      
     default:
         return state
