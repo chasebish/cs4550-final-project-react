@@ -6,18 +6,33 @@ import { TopArtists, TopTracks } from '../components'
 import { MusicService } from '../services'
 import { artistActions, trackActions } from '../constants'
 
+import { UserService } from '../services'
+
 class HomeComponent extends React.Component {
 
     constructor(props) {
         super(props)
         this.musicService = MusicService.instance
+        this.userService = UserService.instance
     }
 
     componentDidMount() {
         this.musicService.getTopArtists()
-            .then(artists => this.props.setArtists(artists))
+            .then(artists => {
+                this.props.setArtists(artists)
+            })
         this.musicService.getTopTracks()
-            .then(tracks => this.props.setTracks(tracks))
+            .then(tracks => {
+                this.props.setTracks(tracks)
+            })
+    }
+
+    addNewArtists = artist => {
+        console.log('add', artist)
+    }
+
+    addNewTracks = tracks => {
+        console.log('add', tracks)
     }
 
     render() {
@@ -26,16 +41,17 @@ class HomeComponent extends React.Component {
                 <h1 className='display-4'>aMused</h1>
                 <div className='jumbotron bg-light pt-5'>
                     <h1 className='font-weight-light mb-2'>Your Feed</h1>
+                    <hr />
                     <div className='row'>
-                        <div className='col-xl-6'>
+                        <div className='col-xl-9 col-lg-8'>
                         </div>
-                        <div className='col-xl-6 mt-5 mt-xl-0'>
+                        <div className='col-xl-3 col-lg-4'>
                             <div className='row'>
-                                <div className='col-md-6'>
+                                <div className='col'>
                                     <TopArtists />
-                                </div>
-                                <div className='col-md-6 mt-3 mt-md-0'>
-                                    <TopTracks />
+                                    <div className='mt-3'>
+                                        <TopTracks/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
