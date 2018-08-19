@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { userActions } from '../constants'
+import { songActions } from '../constants'
 import { UserService } from '../services'
+import { SongService } from '../services'
 
 import './containers.css'
 
@@ -12,6 +14,7 @@ class ProfileComponent extends React.Component {
     constructor(props) {
         super(props)
         this.userService = UserService.instance
+        this.songService = SongService.instance
     }
 
     state = {
@@ -43,6 +46,12 @@ class ProfileComponent extends React.Component {
         user.firstName !== null && this.setFirstName(user.firstName)
         user.lastName !== null && this.setLastName(user.lastName)
         user.email !== null && this.setEmail(user.email)
+        this.songService.artistSearch(this.state.username)
+            .then(searchSongs => {
+                this.props.setSearchSongs(searchSongs)
+            }, () => {
+                console.warn('Error retrieving songs')
+            })
     }
 
     updateUser = () => {
@@ -83,19 +92,36 @@ class ProfileComponent extends React.Component {
     renderSongs = songs => {
 
         let songCards = []
-
-        for (const song of songs) {
-            const card =
-                <div key={song.id} className='col-xl-4 col-md-6 mt-3'>
-                    <div className="card border-info">
-                        <div className="card-body text-info">
-                            <h5 className="card-title">{song.title}</h5>
-                            <p className="card-text">Add Song Button</p>
+        let c = 0
+        if (songs) {
+            for (const song of songs) {
+                const card =
+                    <div key={c} className='col-xl-4 col-md-6 mt-3'>
+                        <div className="card border-info">
+                            <div className="card-body text-info">
+                                <h5 className="card-title">{song.title}</h5>
+                                <p className="card-text">Add Song Button</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-            songCards.push(card)
+                songCards.push(card)
+                c++
+            }
+        }
+        if (this.props.searchSongs.toptracks) {
+            for (let song of this.props.searchSongs.toptracks.track) {
+                const component =
+                    <div key={c} className='col-xl-4 col-md-6 mt-3'>
+                        <div className="card border-info">
+                            <div className="card-body text-info">
+                                <h5 className="card-title">{song.name}</h5>
+                                <p className="card-text">Add Song Button</p>
+                            </div>
+                        </div>
+                    </div>
+                songCards.push(component)
+                c++
+            }
         }
         return songCards
     }
@@ -174,18 +200,22 @@ class ProfileComponent extends React.Component {
 ProfileComponent.propTypes = {
     history: PropTypes.object,
     user: PropTypes.object,
+    setSearchSongs: PropTypes.func,
+    searchSongs: PropTypes.object,
     setUser: PropTypes.func
 }
 
 const mapStateToProps = state => (
     {
-        user: state.UserReducer.user
+        user: state.UserReducer.user,
+        searchSongs: state.SongReducer.searchSongs
     }
 )
 
 const mapDispatchToProps = dispatch => (
     {
-        setUser: user => dispatch({ type: userActions.SET_USER, user })
+        setUser: user => dispatch({ type: userActions.SET_USER, user }),
+        setSearchSongs: searchSongs => dispatch({ type: songActions.SET_SEARCH_SONGS, searchSongs })
     }
 )
 

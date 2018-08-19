@@ -26,6 +26,10 @@ export default class SongService {
         fetch(`${SONG_URL}?method=track.search&track=${query}&api_key=${API_KEY}&format=json`)
             .then(response => response.json())
 
+    artistSearch = query =>
+        fetch(`${SONG_URL}?method=artist.gettoptracks&artist=${query}&api_key=${API_KEY}&format=json`)
+            .then(response => response.json())
+
     findSongByArtistAndTrack = (artist, track) =>
         fetch(`${SONG_URL}?method=track.getInfo&api_key=${API_KEY}&artist=${artist}&track=${track}&format=json`)
             .then(response => response.json())
