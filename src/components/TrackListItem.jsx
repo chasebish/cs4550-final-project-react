@@ -7,7 +7,6 @@ import './component.css'
 const TrackListItem = ({ track, rank, history }) => (
     <li onClick={() => routeSong(track, history)} className='list-group-item list-group-item-primary cursor-pointer'>
         <h5 className='font-weight-light'>#{rank} <u>{track.name}</u></h5>
-        {console.log(history)}
     </li>
 )
 
