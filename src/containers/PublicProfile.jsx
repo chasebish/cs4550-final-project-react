@@ -18,8 +18,13 @@ class PublicProfile extends React.Component {
         name: '',
         reviews: [],
         uploads: [],
-        follower: [],
-        showFollowers: false
+        followers: {
+            id:'',
+            followerName:'',
+            followedName:''
+        },
+        showFollowers: false,
+        showAlert: false,
     }
 
     componentDidMount() {
@@ -44,6 +49,9 @@ class PublicProfile extends React.Component {
                 this.setFollowers(user.followerList)
             })
     }
+
+    showAlert = () => this.setState({ showAlert: true })
+    hideAlert = () => this.setState({ showAlert: false })
 
     setUser = user => this.setState({user})
     setBanner = banner => {
@@ -181,10 +189,26 @@ class PublicProfile extends React.Component {
 
     follow = () => {
         this.userService.followUser(this.state.user.id)
+            .then(res => {
+                if (res.status === 200 || res.status === 201 || res.id) {
+                    alert('You followed ' + this.state.name + '!')
+                }
+                else {
+                    alert('You were unable to follow ' + this.state.name)
+                }
+            })
     }
 
     unfollow = () => {
         this.userService.unfollowUser(this.state.user.id)
+            .then(res => {
+                if (res.status === 200 || res.status === 201) {
+                    alert('You unfollowed ' + this.state.name + '!')
+                }
+                else {
+                    alert('You were unable to unfollow ' + this.state.name)
+                }
+            })
     }
 
     showFollowers = () => {
@@ -196,7 +220,7 @@ class PublicProfile extends React.Component {
                     <ul className="list-unstyled" key={c}>
                         <li className="card-body text-info">
                             {follower.followerName ?
-                                <Link to={`/public-profile/${follower.followerName}`}><h5>{follower.followerName}</h5></Link>
+                                <Link onClick={() => window.location = `/public-profile/${follower.followerName}`} to={`/public-profile/${follower.followerName}`}><h5>{follower.followerName}</h5></Link>
                                 :
                                 <h5>User {follower.id}</h5>
                             }
