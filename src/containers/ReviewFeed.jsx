@@ -2,7 +2,7 @@
 
 
 import React from 'react'
-import { ReviewService } from '../services'
+import { UserService, ReviewService } from '../services'
 import './containers.css'
 
 export default class ReviewFeed extends React.Component {
@@ -10,18 +10,22 @@ export default class ReviewFeed extends React.Component {
     constructor(props) {
         super(props)
         this.reviewService = ReviewService.instance
+        this.userService = UserService.instance
         this.state = {
             reviews: []
         }
     }
 
     componentDidMount() {
-        this.reviewService.findFollowedReviews()
-            .then(reviews => {
-                this.setState({
-                    reviews: reviews
-                })
-            })
+        this.userService.getProfile()
+            .then(() => {
+                this.reviewService.findFollowedReviews()
+                    .then(reviews => {
+                        this.setState({
+                            reviews: reviews
+                        })
+                    })
+            }, () => { return })
     }
 
     renderReviews = () => {

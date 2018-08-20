@@ -7,7 +7,7 @@ import { MusicService, SongService } from '../services'
 import { artistActions, trackActions } from '../constants'
 
 import { UserService } from '../services'
-import ReviewFeed from './ReviewFeed';
+import ReviewFeed from './ReviewFeed'
 
 class HomeComponent extends React.Component {
 
@@ -30,61 +30,6 @@ class HomeComponent extends React.Component {
                 // this.addNewTracks(tracks.tracks)
             })
     }
-
-    /**
-     * Functions used to populate database initially
-     */
-    
-    // addNewArtists = artist => {
-    //     // console.log(artist.artist)
-    //     for (let a of artist.artist) {
-    //         // console.log(a)
-    //         this.userService.findUserByUsername(a.name)
-    //             .then(() => {
-    //                 return
-    //             }, () => {
-
-    //                 const newArtistUser = {
-    //                     username: a.name,
-    //                     password: 'new-artist-password',
-    //                     role: 'ARTIST'
-    //                 }
-
-    //                 this.userService.createUser(newArtistUser)
-    //                     .then(artist => {
-    //                         console.log('artist created!', artist)
-    //                     }, () => console.warn('ERROR CREATING ARTIST'))
-    //             })
-    //     }
-    // }
-
-    // addNewTracks = tracks => {
-    //     console.log('add', tracks.track)
-    //     for (let t of tracks.track) {
-    //         this.userService.findUserByUsername(t.artist.name)
-    //             .then(() => {
-    //                 this.addSong(t)
-    //             }, () => {
-    //                 console.log('create user')
-    //             })
-    //     }
-    // }
-
-    // addSong = song => {
-    //     const id = `${song.name.replace(/\s/g, '').replace('%', '').toLowerCase()}-${song.artist.name.replace(/\s/g, '').toLowerCase()}`
-    //     // console.log(id)
-    //     this.songService.findSongById(id)
-    //         .then(song => console.log(song),
-    //             () => {
-    //                 const newSong = {
-    //                     title: song.name,
-    //                     artistName: song.artist.name,
-    //                     songType: 'API'
-    //                 }
-    //                 this.songService.createSong(newSong)
-    //                     .catch(() => console.error(newSong))
-    //             })
-    // }
 
     render() {
         return (
