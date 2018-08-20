@@ -28,3 +28,67 @@
 .reviewTextArea {
     height: 150px;
 }
+
+.user-banner-img {
+    min-height: 300px;
+    border: 5px solid darkgrey;
+    min-width: 100%;
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.user-profilepic-img {
+    position: relative;
+    border: 2px solid darkgrey;
+    width: 200px;
+    border-radius: 1px;
+    height: 200px;
+    top: -160px;
+    left: 40px;
+    float:left;
+    z-index:5;
+}
+
+.user-profile-menu {
+    min-height: 50px;
+    display:flex;
+    align-items: center;
+    background-color: white;
+    position: relative;
+    left: -200px;
+    top: -40px;
+}
+
+.user-profile-menu ul {
+    margin-bottom: initial;
+}
+
+.spacer {
+    padding-left: 280px;
+}
+
+.user-profile-menu li {
+    display: inline;
+    border-right: 1px solid darkgray;
+    padding: 14px;
+}
+
+.user-profile-name {
+    position: relative;
+    top: -60px;
+    left: 60px;
+    color: white;
+    font-weight: 900;
+}
+
+.user-interaction-container {
+    position: relative;
+    float: right;
+    top: -95px;
+    right: 20px;
+}
+
+.user-profile-reviews {
+    position: relative;
+    left: -190px;
+}
