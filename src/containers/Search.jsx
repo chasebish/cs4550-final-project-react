@@ -54,7 +54,7 @@ class SearchComponent extends React.Component {
             .then(searchSongs => {
                 this.setState({ amusedSongs: searchSongs })
             })
-        this.userService.findUserByUsername(this.props.match.params.query)
+        this.userService.searchUsers(this.props.match.params.query)
             .then(searchUsers => {
                 this.setState({ users: searchUsers })
             })
@@ -125,7 +125,7 @@ class SearchComponent extends React.Component {
                     const component =
                         <div className='mt-3 bg-light' key={c}>
                             <div className='row m-1 mt-2 mb-2'>
-                                <div className='col-sm-6'>
+                                <div className='col-lg-8 col-xl-7'>
                                     <UserResult name={u.username} />
                                 </div>
                             </div>
@@ -133,20 +133,6 @@ class SearchComponent extends React.Component {
                     users.push(component)
                     c++
                 }
-            }
-        }
-        else {
-            if (this.state.users.role === role) {
-                const component =
-                    <div className='mt-3 bg-light' key={c}>
-                        <div className='row m-1 mt-2 mb-2'>
-                            <div className='col-sm-6'>
-                                <UserResult name={this.state.users.username} />
-                            </div>
-                        </div>
-                    </div>
-                users.push(component)
-                c++
             }
         }
         return users
@@ -174,8 +160,16 @@ class SearchComponent extends React.Component {
                 {this.state.showUsers &&
                     <div>
                         <h1 className='font-weight-light'>{this.state.users.length} results for &quot;{this.state.query}&quot;</h1>
-                        {this.renderUsers('ARTIST')}
-                        {this.renderUsers('REVIEWER')}
+                        <div className='row'>
+                            <div className='col'>
+                                <h3>Artists</h3>
+                                {this.renderUsers('ARTIST')}
+                            </div>
+                            <div className='col'>
+                                <h3>Reviewers</h3>
+                                {this.renderUsers('REVIEWER')}
+                            </div>
+                        </div>
                     </div>
                 }
             </div>

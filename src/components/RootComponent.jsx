@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 
-import { Home, Login, Register, ArtistRegister, AddSong, Profile, SongClass, Search, Admin } from '../containers'
+import { Home, Login, Register, ArtistRegister, AddSong, Profile, SongClass, Search, Admin, PublicProfile} from '../containers'
 import { Navbar } from '.'
 
 const RootComponent = () => (
@@ -16,10 +16,11 @@ const RootComponent = () => (
                     <Route exact path='/register/artist' component={ArtistRegister} />
                     <Route exact path='/profile' component={Profile} />
                     <Route exact path='/addsong' component={AddSong} />
-                    <Route path='/song/:artist/:track' component={SongClass} />
+                    <Route exact path='/song/:artist/:track' component={SongClass} />
                     <Route exact path='/search' render={() => (<Redirect to="/" />)} />
                     <Route exact path='/search/:query' component={Search} />
                     <Route exact path='/admin' component={Admin} />
+                    <Route exact path='/public-profile/:username' component={PublicProfile} />
                 </Switch>
             </div>
         </div>
