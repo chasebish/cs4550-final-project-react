@@ -205,9 +205,9 @@ class PublicProfile extends React.Component {
         return (
             <div className='jumbotron bg-light pt-5'>
                 <div> 
-                    <img className='user-banner-img' src={this.state.banner} />
+                    <img alt="banner pic" className='user-banner-img' src={this.state.banner} />
                 </div>
-                <img className='user-profilepic-img navbar-item' src={this.state.profilePic} />
+                <img alt="prof pic" className='user-profilepic-img navbar-item' src={this.state.profilePic} />
                 <h3 className='user-profile-name'>{this.state.name}</h3>
                 <div className='user-interaction-container'>
                     <button onClick={() => this.follow()} id='follow-button' style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Follow</button>
