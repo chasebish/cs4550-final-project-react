@@ -7,6 +7,7 @@ import { MusicService, SongService } from '../services'
 import { artistActions, trackActions } from '../constants'
 
 import { UserService } from '../services'
+import ReviewFeed from './ReviewFeed';
 
 class HomeComponent extends React.Component {
 
@@ -94,11 +95,12 @@ class HomeComponent extends React.Component {
                     <hr />
                     <div className='row'>
                         <div className='col-xl-9 col-lg-8'>
+                            <ReviewFeed />
                         </div>
                         <div className='col-xl-3 col-lg-4'>
                             <div className='row'>
                                 <div className='col'>
-                                    <TopArtists />
+                                    <TopArtists/>
                                     <div className='mt-3'>
                                         <TopTracks />
                                     </div>
