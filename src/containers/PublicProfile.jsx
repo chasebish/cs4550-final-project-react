@@ -35,9 +35,9 @@ class PublicProfile extends React.Component {
                 else {
                     this.setProfPic('')
                 }
+                this.setName(user.username)
                 this.setReviews(user.reviews)
                 this.setUploads(user.uploads)
-                this.setName(user.username)
             })
     }
 
@@ -84,6 +84,10 @@ class PublicProfile extends React.Component {
         return reviewCards
     }
 
+    follow = () => {
+        this.userService.followUser(this.state.user.id)
+    }
+
     render() {
         return (
             <div className='jumbotron bg-light pt-5'>
@@ -93,32 +97,34 @@ class PublicProfile extends React.Component {
                 <img className='user-profilepic-img navbar-item' src={this.state.profilePic} />
                 <h3 className='user-profile-name'>{this.state.name}</h3>
                 <div className='user-interaction-container'>
-                    <button style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Follow</button>
+                    <button click="follow()" id='follow-button' style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Follow</button>
                     <button style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Unfollow</button>
                 </div>
-                <div className='user-profile-menu'>
-                    <span className='spacer'></span>
-                    <ul className="list-unstyled">
-                        <li>
-                            <a className="navbar-item " href="#">About</a>
-                        </li>
-                        <li>
-                            <a className="navbar-item " href="#">Followers</a>
-                        </li>
-                    </ul>
-                </div>
-                <div className='user-profile-content'>
-                    {this.state.user.role === 'ARTIST' ?
-                        <div>
-                            <h3>Songs</h3> 
-                            {this.renderUploads()}
-                        </div>
-                        :
-                        <div>
-                            <h3>Reviews</h3>
-                            {this.renderReviews()}
-                        </div>
-                    }
+                <div className='user-content-container'>
+                    <div className='user-profile-menu'>
+                        <span className='spacer'></span>
+                        <ul className="list-unstyled">
+                            <li>
+                                <a className="navbar-item " href="#">About</a>
+                            </li>
+                            <li>
+                                <a className="navbar-item " href="#">Followers</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className='user-profile-content'>
+                        {this.state.user.role === 'ARTIST' ?
+                            <div>
+                                <h3>Songs</h3> 
+                                {this.renderUploads()}
+                            </div>
+                            :
+                            <div>
+                                <h3>Reviews</h3>
+                                {this.renderReviews()}
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         )

@@ -98,3 +98,8 @@
     position: relative;
     left: -190px;
 }
+
+.user-content-container {
+    position: relative;
+    /* top: 35px; */
+}

@@ -127,7 +127,7 @@ class SongClass extends React.Component {
             ratingType: 'EMOTION',
             ratingValue: this.state.rating.emotion
         }
-
+        console.log(this.state.songId)
         this.reviewService.createReview(this.state.songID, review)
             .then(review => {
                 this.ratingService.createRating(review.id, overallRating)

@@ -26,6 +26,17 @@ export default class UserService {
         })
             .then(response => response.json())
 
+    followUser = userId => 
+        fetch(`${SERVER_URL}/follow/userId`, {
+            body: JSON.stringify(userId),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST'
+        })
+            .then(response => response.json())
+
     findAllUsers = () =>
         fetch(`${SERVER_URL}/user`)
             .then(response => response.json())
