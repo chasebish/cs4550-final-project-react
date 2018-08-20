@@ -87,7 +87,11 @@ class SongClass extends React.Component {
                     songType: 'API'
                 }
                 this.songService.createSong(newSong)
-                    .then(() => { console.log('song created') }, () => console.warn('no creation'))
+                    .then(song => {
+                        console.log(song)
+                        this.setSongID(song.id)
+                        this.setState({ amusedSong: song })
+                    }, () => console.warn('no creation'))
             })
     }
 
@@ -128,7 +132,7 @@ class SongClass extends React.Component {
             ratingType: 'EMOTION',
             ratingValue: this.state.rating.emotion
         }
-        console.log(this.state.songId)
+        console.log(this.state.songID)
         this.reviewService.createReview(this.state.songID, review)
             .then(review => {
                 this.ratingService.createRating(review.id, overallRating)
