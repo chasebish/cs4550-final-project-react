@@ -29,6 +29,11 @@
     height: 150px;
 }
 
+#review {
+    background: rgb(110,117,124);
+    color: white;
+}
+
 .user-banner-img {
     min-height: 300px;
     max-height: 300px;

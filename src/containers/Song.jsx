@@ -31,7 +31,8 @@ class SongClass extends React.Component {
             instrumentals: undefined,
             lyricism: undefined,
             emotion: undefined
-        }
+        },
+        amusedSong: {}
     }
 
     componentDidMount() {
@@ -39,6 +40,12 @@ class SongClass extends React.Component {
             .then(song => {
                 this.setSong(song)
                 this.setName(song.track.name)
+
+                const id = `${song.track.name.replace(/\s/g, '').toLowerCase()}-${song.track.artist.name.replace(/\s/g, '').toLowerCase()}`
+                this.songService.findSongById(id)
+                    .then(song => {
+                        this.setState({ amusedSong: song })
+                    })
 
                 // Adds Artist and Song to the database if they don't exist yet
                 this.addArtistAndSong(song.track)
@@ -68,7 +75,7 @@ class SongClass extends React.Component {
     }
 
     addSong = (artist, song) => {
-        const id = `${song.name.replace(/\s/g, '').toLowerCase()}-${artist.username.toLowerCase()}`
+        const id = `${song.name.replace(/\s/g, '').toLowerCase()}-${artist.username.replace(/\s/g, '').toLowerCase()}`
         this.songService.findSongById(id)
             .then(song => {
                 this.setSongID(song.id)
@@ -106,19 +113,19 @@ class SongClass extends React.Component {
         }
         const vocalsRating = {
             ratingType: 'VOCALS',
-            ratingValue: this.state.rating.production
+            ratingValue: this.state.rating.vocals
         }
         const instrumentalsRating = {
             ratingType: 'INSTRUMENTATION',
-            ratingValue: this.state.rating.production
+            ratingValue: this.state.rating.instrumentals
         }
         const lyricismRating = {
             ratingType: 'LYRICISM',
-            ratingValue: this.state.rating.production
+            ratingValue: this.state.rating.lyricism
         }
         const emotionRating = {
             ratingType: 'EMOTION',
-            ratingValue: this.state.rating.production
+            ratingValue: this.state.rating.emotion
         }
 
         this.reviewService.createReview(this.state.songID, review)
@@ -129,11 +136,13 @@ class SongClass extends React.Component {
                 this.ratingService.createRating(review.id, instrumentalsRating)
                 this.ratingService.createRating(review.id, lyricismRating)
                 this.ratingService.createRating(review.id, emotionRating)
-                this.songService.findSongBySongId(this.state.songID)
-                    .then(song => {
-                        // this.setSong(song)
-                        console.log('amused song', song)
-                    }, () => console.warn('Could not find song'))
+                    .then(() => {
+                        this.songService.findSongBySongId(this.state.songID)
+                            .then(song => {
+                                this.setState({ amusedSong: song })
+                                console.log('amused song', song)
+                            }, () => console.warn('Could not find song'))
+                    })
                 this.closeModal()
             }, () => console.warn('Could not post review'))
 
@@ -213,6 +222,95 @@ class SongClass extends React.Component {
         }
     }
 
+    renderReviews = () => {
+
+        let reviews = []
+
+        if (this.state.amusedSong.reviews) {
+            for (let r of this.state.amusedSong.reviews) {
+                console.log(r)
+                const review = (
+                    <div key={r.id} className='col-lg-6'>
+                        <div className="card text-white bg-secondary mb-3">
+                            <div className="card-header">
+                                Review by {r.username}
+                            </div>
+                            <div className="card-body">
+                                <blockquote className="blockquote mb-0">
+                                    <p>{r.reviewText}</p>
+                                    {this.renderRatings(r.ratings)}
+                                    <br />
+                                    <p className='font-weight-light'><small>at {new Date(r.reviewTime).toLocaleString()}</small></p>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                )
+                reviews.push(review)
+            }
+        }
+        return reviews
+    }
+
+    renderRatings = songratings => {
+        let ratings = []
+        for (let r of songratings) {
+            switch (r.ratingType) {
+            case 'OVERALL':
+                ratings.push(
+                    <small key={r.id}>
+                        Overall: {r.ratingValue}
+                        <br />
+                    </small>
+                )
+                break
+            case 'PRODUCTION':
+                ratings.push(
+                    <small key={r.id}>
+                        Production: {r.ratingValue}
+                        <br />
+                    </small>
+                )
+                break
+            case 'EMOTION':
+                ratings.push(
+                    <small key={r.id}>
+                        Emotion: {r.ratingValue}
+                        <br />
+                    </small>
+                )
+                break
+            case 'INSTRUMENTATION':
+                ratings.push(
+                    <small key={r.id}>
+                        Instrumentals: {r.ratingValue}
+                        <br />
+                    </small>
+                )
+                break
+            case 'LYRICISM':
+                ratings.push(
+                    <small key={r.id}>
+                        Lyricism: {r.ratingValue}
+                        <br />
+                    </small>
+                )
+                break
+            case 'VOCALS':
+                ratings.push(
+                    <small key={r.id}>
+                        Vocals: {r.ratingValue}
+                        <br />
+                    </small>
+                )
+                break
+            default:
+                return
+            }
+        }
+        return ratings
+    }
+
     render() {
         return (
             <div className='jumbotron'>
@@ -243,21 +341,29 @@ class SongClass extends React.Component {
                     </ul>
                 </div>
                 <div className='text-center mt-4'>
-                    <div className='row justify-content-center m-b-neg-20'>
+                    <div className='row justify-content-center minus-m-b-20'>
                         <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Overall</p>
                         <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Production</p>
                         <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Vocals</p>
                     </div>
-                    <div className='row justify-content-center m-b-neg-20'>
+                    <div className='row justify-content-center'>
+                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>{this.state.amusedSong.avgOverall}</p>
+                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>{this.state.amusedSong.avgProduction}</p>
+                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>{this.state.amusedSong.avgVocals}</p>
+                    </div>
+                    <div className='row justify-content-center minus-m-b-20'>
                         <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Instrumentals</p>
                         <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Lyricism</p>
                         <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>Emotion</p>
                     </div>
-                    {/* <div className='row justify-content-center'>
-                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>{this.state.video.avgProduction}</p>
-                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>{this.state.video.avgCuteness}</p>
-                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>{this.state.video.avgSadness}</p>
-                    </div> */}
+                    <div className='row justify-content-center'>
+                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>{this.state.amusedSong.avgInstrumentation}</p>
+                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>{this.state.amusedSong.avgLyricism}</p>
+                        <p className='text-info col-xl-3 col-lg-4 col-md-3 col-4'>{this.state.amusedSong.avgEmotion}</p>
+                    </div>
+                </div>
+                <div className='row'>
+                    {this.renderReviews()}
                 </div>
                 <Modal isOpen={this.state.openModal}>
                     <div className="modal-header">
