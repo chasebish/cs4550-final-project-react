@@ -87,7 +87,11 @@ class SongClass extends React.Component {
                     songType: 'API'
                 }
                 this.songService.createSong(newSong)
-                    .then(() => { console.log('song created') }, () => console.warn('no creation'))
+                    .then(song => {
+                        console.log(song)
+                        this.setSongID(song.id)
+                        this.setState({ amusedSong: song })
+                    }, () => console.warn('no creation'))
             })
     }
 

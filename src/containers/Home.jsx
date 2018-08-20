@@ -34,6 +34,7 @@ class HomeComponent extends React.Component {
     render() {
         return (
             <div>
+                {console.log('david deploy')}
                 <h1 className='display-4'>aMused</h1>
                 <div className='jumbotron bg-light pt-5'>
                     <h1 className='font-weight-light mb-2'>Your Feed</h1>
