@@ -26,7 +26,7 @@ export default class SongService {
         fetch(`${SONG_URL}?method=track.search&track=${query}&api_key=${API_KEY}&format=json`)
             .then(response => response.json())
 
-    songSearchAmuse = query => 
+    songSearchAmuse = query =>
         fetch(`${SERVER_URL}/song/search/title/${query}`)
             .then(response => response.json())
 
@@ -88,8 +88,9 @@ export default class SongService {
         fetch(`${SERVER_URL}/song/${id}`)
             .then(response => response.json())
 
-    findSongById = id =>
-        fetch(`${SERVER_URL}/song/songId/${id}`)
+    findSongById = id => {
+        return fetch(`${SERVER_URL}/song/songId/${id}`)
             .then(response => response.json())
+    }
 
 }
