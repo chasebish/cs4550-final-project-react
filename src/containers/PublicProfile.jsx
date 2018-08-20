@@ -46,7 +46,7 @@ class PublicProfile extends React.Component {
     setProfPic = profPic => this.setState({profilePic:profPic})
     setName = name => this.setState({name:name})
     setReviews = reviews => this.setState({reviews})
-    setUploads = uploads => this.ssetState({uploads})
+    setUploads = uploads => this.setState({uploads})
 
     renderUploads = () => {
         let songCards = []
