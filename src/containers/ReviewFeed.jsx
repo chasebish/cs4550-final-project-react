@@ -1,5 +1,6 @@
 import React from 'react'
 import { ReviewService } from '../services'
+import './containers.css'
 
 export default class ReviewFeed extends React.Component {
 
@@ -21,12 +22,14 @@ export default class ReviewFeed extends React.Component {
     }
 
     renderReviews = () => {
-        var rows = this.state.reviews.map((review, index) =>
-            <li className="list-group-item" key={index}>
+        var rows = this.state.reviews.sort((review1, review2) => new Date(review2.reviewTime) - new Date(review1.reviewTime)).map((review, index) =>
+            <li id="review" className="font-weight-light list-group-item list-group-item-dark" key={index}>
                 <div>Username: {review.username}</div>
                 <div>Song: {review.songTitle}</div>
-                <div>Artist:{review.songArtist}</div>
-                Review: {review.reviewText}
+                <div>Artist: {review.songArtist}</div>
+                <div>Review: {review.reviewText}</div>
+                <div>at {new Date(review.reviewTime).toLocaleDateString()}, {new Date(review.reviewTime).toLocaleTimeString()}</div>
+
             </li>
         )
         return rows

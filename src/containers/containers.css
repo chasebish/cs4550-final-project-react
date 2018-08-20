@@ -28,3 +28,8 @@
 .reviewTextArea {
     height: 150px;
 }
+
+#review {
+    background: rgb(110,117,124);
+    color: white;
+}
