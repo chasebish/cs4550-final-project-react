@@ -17,6 +17,8 @@ class PublicProfile extends React.Component {
         name: '',
         reviews: [],
         uploads: [],
+        follower: [],
+        showFollowers: false
     }
 
     componentDidMount() {
@@ -38,6 +40,7 @@ class PublicProfile extends React.Component {
                 this.setName(user.username)
                 this.setReviews(user.reviews)
                 this.setUploads(user.uploads)
+                this.setFollowers(user.followers)
             })
     }
 
@@ -46,14 +49,90 @@ class PublicProfile extends React.Component {
     setProfPic = profPic => this.setState({profilePic:profPic})
     setName = name => this.setState({name:name})
     setReviews = reviews => this.setState({reviews})
-    setUploads = uploads => this.ssetState({uploads})
+    setUploads = uploads => this.setState({uploads})
+    setFollowers = followers => this.setState({followers})
+    setShowFollowers = () => {
+        this.state.showFollowers ?
+            this.setState({showFollowers: false}) : this.setState({showFollowers: true})
+    } 
+
+    renderRatings = (userRatings) => {
+        let ratings = []
+        for (let r of userRatings) {
+            switch (r.ratingType) {
+            case 'OVERALL':
+                ratings.push(
+                    <div key={r.id}>
+                        <small>
+                            Overall: {r.ratingValue}
+                        </small>
+                        <br />
+                    </div>
+                )
+                break
+            case 'PRODUCTION':
+                ratings.push(
+                    <div key={r.id}>
+                        <small>
+                            Production: {r.ratingValue}
+                        </small>
+                        <br />
+                    </div>
+                )
+                break
+            case 'EMOTION':
+                ratings.push(
+                    <div key={r.id}>
+                        <small>
+                            Emotion: {r.ratingValue}
+                        </small>
+                        <br />
+                    </div>
+                )
+                break
+            case 'INSTRUMENTATION':
+                ratings.push(
+                    <div key={r.id}>
+                        <small>
+                            Instrumentals: {r.ratingValue}
+                        </small>
+                        <br />
+                    </div>
+                )
+                break
+            case 'LYRICISM':
+                ratings.push(
+                    <div key={r.id}>
+                        <small>
+                            Lyricism: {r.ratingValue}
+                        </small>
+                        <br />
+                    </div>
+                )
+                break
+            case 'VOCALS':
+                ratings.push(
+                    <div key={r.id}>
+                        <small>
+                            Vocals: {r.ratingValue}
+                        </small>
+                        <br />
+                    </div>
+                )
+                break
+            default:
+                return
+            }
+        }
+        return ratings
+    }
 
     renderUploads = () => {
         let songCards = []
         let c = 0
         for (let song of this.state.uploads) {
             const card =
-                <div key={c} className='col-xl-4 col-md-6 mt-3'>
+                <div key={c} className='col'>
                     <div className="card border-info">
                         <div className="card-body text-info">
                             <h5 className="card-title">{song.title}</h5>
@@ -71,10 +150,12 @@ class PublicProfile extends React.Component {
         let c = 0
         for (let review of this.state.reviews) {
             const card =
-                <div key={c} className='col-xl-4 col-md-6 mt-3'>
+                <div key={c} className='col'>
                     <div className="card border-info">
                         <div className="card-body text-info">
-                            <h5 className="card-title">{review.text}</h5>
+                            <h5>{review.songArtist} - {review.songTitle}</h5>
+                            <p className="card-title">{review.reviewText}</p>
+                            {this.renderRatings(review.ratings)}
                         </div>
                     </div>
                 </div>
@@ -88,6 +169,27 @@ class PublicProfile extends React.Component {
         this.userService.followUser(this.state.user.id)
     }
 
+    unfollow = () => {
+        this.userService.unfollowUser(this.state.user.id)
+    }
+
+    showFollowers = () => {
+        let followers = []
+        let c = 0
+        for (let follower of this.state.followers) {
+            const card =
+                <ul key={c}>
+                    <li className="card-body text-info">
+                        <h5>{follower.username}</h5>
+                    </li>
+                </ul>
+            followers.push(card)
+            c++
+        }
+        this.setShowFollowers()
+        return followers
+    }
+
     render() {
         return (
             <div className='jumbotron bg-light pt-5'>
@@ -97,35 +199,55 @@ class PublicProfile extends React.Component {
                 <img className='user-profilepic-img navbar-item' src={this.state.profilePic} />
                 <h3 className='user-profile-name'>{this.state.name}</h3>
                 <div className='user-interaction-container'>
-                    <button click="follow()" id='follow-button' style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Follow</button>
-                    <button style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Unfollow</button>
+                    <button click="this.follow" id='follow-button' style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Follow</button>
+                    <button click="this.unfollow" style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Unfollow</button>
                 </div>
                 <div className='user-content-container'>
                     <div className='user-profile-menu'>
                         <span className='spacer'></span>
                         <ul className="list-unstyled">
-                            <li>
-                                <a className="navbar-item " href="#">About</a>
-                            </li>
-                            <li>
-                                <a className="navbar-item " href="#">Followers</a>
+                            <li click="this.setShowFollowers" className="navbar-item">
+                                Followers
                             </li>
                         </ul>
                     </div>
                     <div className='user-profile-content'>
                         {this.state.user.role === 'ARTIST' ?
-                            <div>
-                                <h3>Songs</h3> 
-                                {this.renderUploads()}
+                            <div className='row'>
+                                <div><h3>Songs</h3></div>
+                                <div>
+                                    {this.renderUploads()}
+                                </div>
                             </div>
                             :
-                            <div>
-                                <h3>Reviews</h3>
-                                {this.renderReviews()}
+                            <div className='row'>
+                                <div><h3>Reviews</h3></div>
+                                <div>
+                                    {this.renderReviews()}
+                                </div>
                             </div>
                         }
                     </div>
                 </div>
+                {this.state.showFollowers ?
+                    <div className="modal" role="dialog">
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title">Followers</h5>
+                                </div>
+                                <div className="modal-body">
+                                    {this.showFollowers()}
+                                </div>
+                                <div className="modal-footer">
+                                    <button click="this.setShowFollowers" type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    :
+                    ''
+                }
             </div>
         )
     }
