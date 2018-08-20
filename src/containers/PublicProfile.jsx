@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import UserService from '../services/UserService'
@@ -40,7 +41,7 @@ class PublicProfile extends React.Component {
                 this.setName(user.username)
                 this.setReviews(user.reviews)
                 this.setUploads(user.uploads)
-                this.setFollowers(user.followers)
+                this.setFollowers(user.followerList)
             })
     }
 
@@ -145,7 +146,7 @@ class PublicProfile extends React.Component {
                 <div key={c} className='col'>
                     <div className="card border-info">
                         <div className="card-body text-info">
-                            <h5 className="card-title">{song.title}</h5>
+                            <Link to={`/song/${this.state.name}/${song.title}`}><h5 className="card-title">{song.title}</h5></Link>
                         </div>
                     </div>
                 </div>
@@ -155,19 +156,22 @@ class PublicProfile extends React.Component {
         return songCards
     }
 
+
     renderReviews = () => {
         let reviewCards = []
         let c = 0
         for (let review of this.state.reviews) {
             const card =
                 <div key={c} className='col'>
-                    <div className="card border-info">
-                        <div className="card-body text-info">
-                            <h5>{review.songArtist} - {review.songTitle}</h5>
-                            <p className="card-title">{review.reviewText}</p>
-                            {this.renderRatings(review.ratings)}
+                    <Link to={`/review/${review.id}`}>
+                        <div className="card border-info">
+                            <div className="card-body text-info">
+                                <h5>{review.songArtist} - {review.songTitle}</h5>
+                                <p className="card-title">{review.reviewText}</p>
+                                {this.renderRatings(review.ratings)}
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                 </div>
             reviewCards.push(card)
             c++
@@ -189,9 +193,13 @@ class PublicProfile extends React.Component {
         if (this.state.followers) {
             for (let follower of this.state.followers) {
                 const card =
-                    <ul key={c}>
+                    <ul className="list-unstyled" key={c}>
                         <li className="card-body text-info">
-                            <h5>{follower.id}</h5>
+                            {follower.followerName ?
+                                <Link to={`/public-profile/${follower.followerName}`}><h5>{follower.followerName}</h5></Link>
+                                :
+                                <h5>User {follower.id}</h5>
+                            }
                         </li>
                     </ul>
                 followers.push(card)
