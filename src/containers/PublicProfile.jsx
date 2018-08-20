@@ -186,7 +186,6 @@ class PublicProfile extends React.Component {
             followers.push(card)
             c++
         }
-        this.setShowFollowers()
         return followers
     }
 
@@ -199,14 +198,14 @@ class PublicProfile extends React.Component {
                 <img className='user-profilepic-img navbar-item' src={this.state.profilePic} />
                 <h3 className='user-profile-name'>{this.state.name}</h3>
                 <div className='user-interaction-container'>
-                    <button click="this.follow" id='follow-button' style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Follow</button>
-                    <button click="this.unfollow" style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Unfollow</button>
+                    <button click={this.follow} id='follow-button' style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Follow</button>
+                    <button click={this.unfollow} style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Unfollow</button>
                 </div>
                 <div className='user-content-container'>
                     <div className='user-profile-menu'>
                         <span className='spacer'></span>
                         <ul className="list-unstyled">
-                            <li click="this.setShowFollowers" className="navbar-item">
+                            <li click={this.setShowFollowers} className="navbar-item">
                                 Followers
                             </li>
                         </ul>
