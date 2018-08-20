@@ -27,6 +27,14 @@ export default class ReviewService {
             .then(response => response.json())
     }
 
+    findFollowedReviews = () => {
+        return fetch(`${SERVER_URL}/review/follow`, {
+            credentials: 'include',
+            method: 'GET'
+        })
+        .then(response => response.json())
+    }
+
 
 
 }
