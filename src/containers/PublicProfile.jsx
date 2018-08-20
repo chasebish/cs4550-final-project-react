@@ -176,15 +176,18 @@ class PublicProfile extends React.Component {
     showFollowers = () => {
         let followers = []
         let c = 0
-        for (let follower of this.state.followers) {
-            const card =
-                <ul key={c}>
-                    <li className="card-body text-info">
-                        <h5>{follower.username}</h5>
-                    </li>
-                </ul>
-            followers.push(card)
-            c++
+        console.log(this.state.followers)
+        if (this.state.followers) {
+            for (let follower of this.state.followers) {
+                const card =
+                    <ul key={c}>
+                        <li className="card-body text-info">
+                            <h5>{follower.id}</h5>
+                        </li>
+                    </ul>
+                followers.push(card)
+                c++
+            }
         }
         return followers
     }
@@ -198,14 +201,14 @@ class PublicProfile extends React.Component {
                 <img className='user-profilepic-img navbar-item' src={this.state.profilePic} />
                 <h3 className='user-profile-name'>{this.state.name}</h3>
                 <div className='user-interaction-container'>
-                    <button click={this.follow} id='follow-button' style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Follow</button>
-                    <button click={this.unfollow} style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Unfollow</button>
+                    <button onClick={() => this.follow()} id='follow-button' style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Follow</button>
+                    <button onClick={this.unfollow} style={{border: 'solid 1px white', color: 'white'}} className='btn btn-link mr-3 ml-3'>Unfollow</button>
                 </div>
                 <div className='user-content-container'>
                     <div className='user-profile-menu'>
                         <span className='spacer'></span>
                         <ul className="list-unstyled">
-                            <li click={this.setShowFollowers} className="navbar-item">
+                            <li onClick={this.setShowFollowers} className="navbar-item">
                                 Followers
                             </li>
                         </ul>
@@ -228,8 +231,9 @@ class PublicProfile extends React.Component {
                         }
                     </div>
                 </div>
+                {console.log(this.state.showFollowers)}
                 {this.state.showFollowers ?
-                    <div className="modal" role="dialog">
+                    <div className="modal" style={{display: 'inherit'}} role="dialog">
                         <div className="modal-dialog" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
@@ -239,7 +243,7 @@ class PublicProfile extends React.Component {
                                     {this.showFollowers()}
                                 </div>
                                 <div className="modal-footer">
-                                    <button click="this.setShowFollowers" type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button onClick={this.setShowFollowers} type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>

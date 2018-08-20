@@ -16,7 +16,7 @@ export default class UserResult extends React.Component {
         return (
             <div>
                 <div>
-                    <Link to={`/user/${this.state.name}`}><h3>{this.props.name}</h3></Link>
+                    <Link to={`/public-profile/${this.state.name}`}><h3>{this.props.name}</h3></Link>
                 </div>
             </div>
         )
