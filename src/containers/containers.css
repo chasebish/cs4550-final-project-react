@@ -31,6 +31,7 @@
 
 .user-banner-img {
     min-height: 300px;
+    max-height: 300px;
     border: 5px solid darkgrey;
     min-width: 100%;
     max-width: 100%;
@@ -88,7 +89,7 @@
     right: 20px;
 }
 
-.user-profile-reviews {
+.user-profile-content {
     position: relative;
     left: -190px;
 }
