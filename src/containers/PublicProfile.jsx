@@ -45,8 +45,18 @@ class PublicProfile extends React.Component {
     }
 
     setUser = user => this.setState({user})
-    setBanner = banner => this.setState({banner:banner})
-    setProfPic = profPic => this.setState({profilePic:profPic})
+    setBanner = banner => {
+        banner !== '' ?
+            this.setState({banner:banner})
+            :
+            this.setState({banner: 'http://www.piniswiss.com/wp-content/uploads/2013/05/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef-300x199.png'})
+    }
+    setProfPic = profPic => {
+        profPic !== '' ? 
+            this.setState({profilePic:profPic})
+            :
+            this.setState({profilePic: 'http://www.piniswiss.com/wp-content/uploads/2013/05/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef-300x199.png'})
+    }
     setName = name => this.setState({name:name})
     setReviews = reviews => this.setState({reviews})
     setUploads = uploads => this.setState({uploads})
@@ -176,7 +186,6 @@ class PublicProfile extends React.Component {
     showFollowers = () => {
         let followers = []
         let c = 0
-        console.log(this.state.followers)
         if (this.state.followers) {
             for (let follower of this.state.followers) {
                 const card =
@@ -231,7 +240,6 @@ class PublicProfile extends React.Component {
                         }
                     </div>
                 </div>
-                {console.log(this.state.showFollowers)}
                 {this.state.showFollowers ?
                     <div className="modal" style={{display: 'inherit'}} role="dialog">
                         <div className="modal-dialog" role="document">
