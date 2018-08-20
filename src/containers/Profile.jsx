@@ -23,6 +23,8 @@ class ProfileComponent extends React.Component {
         firstName: '',
         lastName: '',
         email: '',
+        profilePic: '',
+        bannerImage: '',
         showAlert: false
     }
 
@@ -46,6 +48,8 @@ class ProfileComponent extends React.Component {
         user.firstName !== null && this.setFirstName(user.firstName)
         user.lastName !== null && this.setLastName(user.lastName)
         user.email !== null && this.setEmail(user.email)
+        user.profilePic !== null && this.setProfPic(user.profilePic)
+        user.bannerImage !== null && this.setBannerImage(user.bannerImage)
         this.songService.artistSearch(user.username)
             .then(searchSongs => {
                 this.props.setSearchSongs(searchSongs)
@@ -60,7 +64,9 @@ class ProfileComponent extends React.Component {
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             email: this.state.email,
-            role: this.props.user.role
+            role: this.props.user.role,
+            profilePic: this.state.profilePic,
+            bannerImage: this.state.bannerImage
         }
         this.userService.updateUser(this.props.user.id, user)
             .then(newUser => {
@@ -83,11 +89,15 @@ class ProfileComponent extends React.Component {
     setFirstName = firstName => this.setState({ firstName })
     setLastName = lastName => this.setState({ lastName })
     setEmail = email => this.setState({ email })
+    setProfPic = profilePic => this.setState({ profilePic })
+    setBannerImage = bannerImage => this.setState({ bannerImage })
 
     updatePassword = event => this.setState({ password: event.target.value })
     updateFirstName = event => this.setState({ firstName: event.target.value })
     updateLastName = event => this.setState({ lastName: event.target.value })
     updateEmail = event => this.setState({ email: event.target.value })
+    updateProfPic = event => this.setState({ profilePic: event.target.value })
+    updateBannerImage = event => this.setState({ bannerImage: event.target.value })
 
     renderSongs = songs => {
         let songCards = []
@@ -169,6 +179,18 @@ class ProfileComponent extends React.Component {
                         <label htmlFor="email" className="col-sm-3 col-md-2 col-form-label lead">Email</label>
                         <div className="col-sm-9 col-md-10">
                             <input value={this.state.email} onChange={this.updateEmail} id='email' className='form-control' />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <label htmlFor="bannerImage" className="col-sm-3 col-md-2 col-form-label lead">Banner Image URL</label>
+                        <div className="col-sm-9 col-md-10">
+                            <input value={this.state.bannerImage} onChange={this.updateBannerImage} id='bannerImage' className='form-control' />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <label htmlFor="profilePic" className="col-sm-3 col-md-2 col-form-label lead">Profile Picture URL</label>
+                        <div className="col-sm-9 col-md-10">
+                            <input value={this.state.profilePic} onChange={this.updateProfPic} id='profilePic' className='form-control' />
                         </div>
                     </div>
                     <button onClick={() => this.updateUser()} className='btn btn-outline-success btn-block mt-2'>
