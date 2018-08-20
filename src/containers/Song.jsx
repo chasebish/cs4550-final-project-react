@@ -88,7 +88,6 @@ class SongClass extends React.Component {
                 }
                 this.songService.createSong(newSong)
                     .then(song => {
-                        console.log(song)
                         this.setSongID(song.id)
                         this.setState({ amusedSong: song })
                     }, () => console.warn('no creation'))
