@@ -131,7 +131,6 @@ class SongClass extends React.Component {
             ratingType: 'EMOTION',
             ratingValue: this.state.rating.emotion
         }
-        console.log(this.state.songID)
         this.reviewService.createReview(this.state.songID, review)
             .then(review => {
                 this.ratingService.createRating(review.id, overallRating)
@@ -144,7 +143,6 @@ class SongClass extends React.Component {
                         this.songService.findSongBySongId(this.state.songID)
                             .then(song => {
                                 this.setState({ amusedSong: song })
-                                console.log('amused song', song)
                             }, () => console.warn('Could not find song'))
                     })
                 this.closeModal()

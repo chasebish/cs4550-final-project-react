@@ -42,7 +42,6 @@ export default class UserService {
             credentials: 'include',
             method: 'DELETE'
         })
-            .then(response => response.json())
 
     findAllUsers = () =>
         fetch(`${SERVER_URL}/user`)
