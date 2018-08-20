@@ -81,6 +81,10 @@ class ProfileComponent extends React.Component {
         this.props.history.push('/login')
     }
 
+    publicProfile = () => {
+        this.props.history.push(`/public-profile/${this.state.username}`)
+    }
+
     showAlert = () => this.setState({ showAlert: true })
     hideAlert = () => this.setState({ showAlert: false })
 
@@ -193,13 +197,15 @@ class ProfileComponent extends React.Component {
                             <input value={this.state.profilePic} onChange={this.updateProfPic} id='profilePic' className='form-control' />
                         </div>
                     </div>
+                    <button onClick={() => this.publicProfile()} className='btn btn-outline-info btn-block mt-2'>
+                        View Your Public Profile
+                    </button>
                     <button onClick={() => this.updateUser()} className='btn btn-outline-success btn-block mt-2'>
                         Update Profile
                     </button>
                     <button onClick={() => this.logout()} className='btn btn-outline-danger btn-block mt-2'>
                         Logout
                     </button>
-
                     {this.props.user && this.props.user.role === 'ARTIST' &&
                         <div className='mt-5'>
                             <h4 className="font-weight-light">Your aMused Songs</h4>
