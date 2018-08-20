@@ -2,7 +2,7 @@
 
 let _singleton = Symbol()
 
-const MUSIC_URL = 'http://ws.audioscrobbler.com/2.0/'
+const MUSIC_URL = 'https://ws.audioscrobbler.com/2.0/'
 const API_KEY = 'c758ebc39655796f64621b54221d1477'
 
 export default class MusicService {

@@ -1,3 +1,6 @@
+/* global alert */
+
+
 import React from 'react'
 import { ReviewService } from '../services'
 import './containers.css'
@@ -41,7 +44,11 @@ export default class ReviewFeed extends React.Component {
 
     render() {
         return (
-            <ul className="list-group">{this.renderReviews()}</ul>
+            <div>
+                {this.state.reviews && this.state.reviews.length === 0 &&
+                    <h1 className='font-weight-light'>You do not follow any reviewers!  Use the search bar discover to new users</h1>}
+                <ul className="list-group">{this.renderReviews()}</ul>
+            </div>
         )
     }
 }
