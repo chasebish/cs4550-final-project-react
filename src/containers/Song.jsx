@@ -45,7 +45,7 @@ class SongClass extends React.Component {
                 this.songService.findSongById(id)
                     .then(song => {
                         this.setState({ amusedSong: song })
-                    })
+                    }, () => { return })
 
                 // Adds Artist and Song to the database if they don't exist yet
                 this.addArtistAndSong(song.track)
@@ -79,6 +79,7 @@ class SongClass extends React.Component {
         this.songService.findSongById(id)
             .then(song => {
                 this.setSongID(song.id)
+                this.setState({ amusedSong: song })
             }, () => {
                 const newSong = {
                     title: song.name,
@@ -86,7 +87,7 @@ class SongClass extends React.Component {
                     songType: 'API'
                 }
                 this.songService.createSong(newSong)
-                    .then(() => console.log('song created'), () => console.warn('no creation'))
+                    .then(() => { console.log('song created') }, () => console.warn('no creation'))
             })
     }
 
@@ -228,7 +229,6 @@ class SongClass extends React.Component {
 
         if (this.state.amusedSong.reviews) {
             for (let r of this.state.amusedSong.reviews) {
-                console.log(r)
                 const review = (
                     <div key={r.id} className='col-lg-6'>
                         <div className="card text-white bg-secondary mb-3">

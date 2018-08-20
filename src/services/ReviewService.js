@@ -27,6 +27,25 @@ export default class ReviewService {
             .then(response => response.json())
     }
 
+    findReviewById = reviewId => {
+        return fetch(`${SERVER_URL}/review/${reviewId}`, {
+            credentials: 'include'
+        })
+            .then(response => response.json())
+    }
+
+    addComment = (reviewId, comment) => {
+        return fetch(`${SERVER_URL}/review/${reviewId}/comment`, {
+            body: JSON.stringify(comment),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST'
+        })
+            .then(response => response.json())
+    }
+
 
 
 }
